@@ -11,6 +11,7 @@ import {
   Platform,
 } from 'react-native';
 import { Stack } from 'expo-router';
+import { useFaultMode } from '@/lib/fault-mode';
 
 interface Task {
   id: string;
@@ -111,7 +112,9 @@ interface Props {
   faultActive?: boolean;
 }
 
-export default function LongPressContextMenuScreen({ faultActive = false }: Props) {
+export default function LongPressContextMenuScreen({ faultActive: faultActiveProp }: Props) {
+  const faultActiveCtx = useFaultMode();
+  const faultActive = faultActiveProp ?? faultActiveCtx;
   const [tasks, setTasks] = useState<Task[]>(INITIAL_TASKS);
   const [menuTaskId, setMenuTaskId] = useState<string | null>(null);
   const [editTask, setEditTask] = useState<Task | null>(null);

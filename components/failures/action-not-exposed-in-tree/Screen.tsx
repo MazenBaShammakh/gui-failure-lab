@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Stack } from 'expo-router';
+import { useFaultMode } from '@/lib/fault-mode';
 
 interface Props {
   faultActive?: boolean;
 }
 
-export default function ActionNotExposedInTreeScreen({ faultActive = false }: Props) {
+export default function ActionNotExposedInTreeScreen({ faultActive: faultActiveProp }: Props) {
+  const faultActiveCtx = useFaultMode();
+  const faultActive = faultActiveProp ?? faultActiveCtx;
   const [playing, setPlaying] = useState(false);
   const [liked, setLiked] = useState(false);
 

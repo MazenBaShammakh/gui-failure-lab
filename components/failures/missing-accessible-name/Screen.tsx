@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { Stack } from 'expo-router';
+import { useFaultMode } from '@/lib/fault-mode';
 
 interface Props {
   faultActive?: boolean;
 }
 
-export default function MissingAccessibleNameScreen({ faultActive = false }: Props) {
+export default function MissingAccessibleNameScreen({ faultActive: faultActiveProp }: Props) {
+  const faultActiveCtx = useFaultMode();
+  const faultActive = faultActiveProp ?? faultActiveCtx;
   const [liked, setLiked] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
 

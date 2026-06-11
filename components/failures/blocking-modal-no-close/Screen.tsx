@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Pressable, Modal, ScrollView } from 'react-native';
 import { Stack } from 'expo-router';
+import { useFaultMode } from '@/lib/fault-mode';
 
 interface Props {
   faultActive?: boolean;
@@ -14,7 +15,9 @@ const ACTIVITY = [
   { label: 'Backup completed successfully', time: '32m ago', icon: '✅' },
 ];
 
-export default function BlockingModalNoCloseScreen({ faultActive = false }: Props) {
+export default function BlockingModalNoCloseScreen({ faultActive: faultActiveProp }: Props) {
+  const faultActiveCtx = useFaultMode();
+  const faultActive = faultActiveProp ?? faultActiveCtx;
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {

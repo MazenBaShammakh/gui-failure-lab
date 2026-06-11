@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef } from 'react';
 import { View, Text, StyleSheet, FlatList, Alert, Pressable } from 'react-native';
 import { Stack } from 'expo-router';
+import { useFaultMode } from '@/lib/fault-mode';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   useSharedValue,
@@ -142,7 +143,9 @@ interface Props {
   faultActive?: boolean;
 }
 
-export default function SwipeAmbiguousDirectionScreen({ faultActive = false }: Props) {
+export default function SwipeAmbiguousDirectionScreen({ faultActive: faultActiveProp }: Props) {
+  const faultActiveCtx = useFaultMode();
+  const faultActive = faultActiveProp ?? faultActiveCtx;
   const [emails, setEmails] = useState<Email[]>(INITIAL_EMAILS);
   const [undoEmail, setUndoEmail] = useState<Email | null>(null);
   const undoTimer = useRef<ReturnType<typeof setTimeout> | null>(null);

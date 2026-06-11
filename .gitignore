@@ -9,6 +9,9 @@ dist/
 web-build/
 expo-env.d.ts
 
+# Playwright MCP verification artifacts
+.playwright-mcp/
+
 # Native
 .kotlin/
 *.orig.*

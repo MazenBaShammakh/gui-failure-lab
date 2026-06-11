@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { Stack } from 'expo-router';
+import { useFaultMode } from '@/lib/fault-mode';
 
 interface Props {
   faultActive?: boolean;
 }
 
-export default function ClickNoVisibleEffectScreen({ faultActive = false }: Props) {
+export default function ClickNoVisibleEffectScreen({ faultActive: faultActiveProp }: Props) {
+  const faultActiveCtx = useFaultMode();
+  const faultActive = faultActiveProp ?? faultActiveCtx;
   const [saved, setSaved] = useState(false);
 
   const handleSave = () => {

@@ -6,7 +6,8 @@ import {
   FlatList,
   Pressable,
 } from 'react-native';
-import { Stack } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
+import { useFaultMode } from '@/lib/fault-mode';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   useSharedValue,
@@ -20,7 +21,7 @@ const MAX_PRICE = 500;
 const THUMB_SIZE = 28;
 const STEP = 10;
 
-interface Product {
+export interface Product {
   id: string;
   name: string;
   price: number;
@@ -28,7 +29,10 @@ interface Product {
   emoji: string;
 }
 
-const PRODUCTS: Product[] = [
+// The product whose detail page is the "Add to Cart" CTA screen.
+export const HERO_PRODUCT_ID = '12';
+
+export const PRODUCTS: Product[] = [
   { id: '1',  name: 'Wireless Headphones',      price: 89,  rating: 4.5, emoji: '🎧' },
   { id: '2',  name: 'Laptop Stand',             price: 45,  rating: 4.7, emoji: '💻' },
   { id: '3',  name: 'Mechanical Keyboard',      price: 220, rating: 4.8, emoji: '⌨️' },
@@ -40,7 +44,7 @@ const PRODUCTS: Product[] = [
   { id: '9',  name: 'Ergonomic Mouse',          price: 95,  rating: 4.5, emoji: '🖱️' },
   { id: '10', name: 'Desk Mat XL',              price: 38,  rating: 4.6, emoji: '🟦' },
   { id: '11', name: 'Smart Power Strip',        price: 55,  rating: 4.2, emoji: '⚡' },
-  { id: '12', name: 'Running Shoes',            price: 149, rating: 4.2, emoji: '👟' },
+  { id: '12', name: 'Nike Air Max Pulse',       price: 149, rating: 4.2, emoji: '👟' },
 ];
 
 // ─── PriceSlider ──────────────────────────────────────────────────────────────
@@ -180,7 +184,10 @@ interface Props {
   faultActive?: boolean;
 }
 
-export default function CustomSliderMissingA11yScreen({ faultActive = false }: Props) {
+export default function CustomSliderMissingA11yScreen({ faultActive: faultActiveProp }: Props) {
+  const faultActiveCtx = useFaultMode();
+  const faultActive = faultActiveProp ?? faultActiveCtx;
+  const router = useRouter();
   const [maxPrice, setMaxPrice] = useState(350);
 
   const filtered = PRODUCTS.filter((p) => p.price <= maxPrice).sort(
@@ -232,6 +239,7 @@ export default function CustomSliderMissingA11yScreen({ faultActive = false }: P
         renderItem={({ item }) => (
           <Pressable
             style={styles.productCard}
+            onPress={() => router.push(`/shop/product/${item.id}`)}
             accessibilityRole="button"
             accessibilityLabel={`${item.name}, $${item.price}, rated ${item.rating} out of 5`}
           >

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Stack } from 'expo-router';
+import { useFaultMode } from '@/lib/fault-mode';
 
 interface Props {
   faultActive?: boolean;
@@ -13,7 +14,9 @@ const KEYPAD_ROWS = [
   ['*', '0', '#'],
 ];
 
-export default function DenseTouchTargetsScreen({ faultActive = false }: Props) {
+export default function DenseTouchTargetsScreen({ faultActive: faultActiveProp }: Props) {
+  const faultActiveCtx = useFaultMode();
+  const faultActive = faultActiveProp ?? faultActiveCtx;
   const [input, setInput] = useState('');
 
   const handleKey = (key: string) => {

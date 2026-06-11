@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ActivityIndicator, ScrollView, Pressable } from 'react-native';
-import { Stack } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
+import { useFaultMode } from '@/lib/fault-mode';
 
-interface Job {
-  id: number;
+export interface Job {
+  id: string;
   title: string;
   company: string;
   location: string;
@@ -12,19 +13,26 @@ interface Job {
   posted: string;
 }
 
-const MOCK_JOBS: Job[] = [
-  { id: 1, title: 'Product Designer', company: 'Figma', location: 'San Francisco, CA', salary: '$130K–$160K', tags: ['Figma', 'UX', 'Prototyping'], posted: '1d ago' },
-  { id: 2, title: 'Data Engineer', company: 'Stripe', location: 'Remote', salary: '$140K–$180K', tags: ['Python', 'Spark', 'dbt'], posted: '2d ago' },
-  { id: 3, title: 'iOS Developer', company: 'Spotify', location: 'Stockholm, Sweden', salary: '€90K–€120K', tags: ['Swift', 'SwiftUI', 'Objective-C'], posted: '3d ago' },
-  { id: 4, title: 'Backend Engineer', company: 'Shopify', location: 'Ottawa, Canada', salary: 'CAD $120K–$150K', tags: ['Go', 'Ruby', 'GraphQL'], posted: '4d ago' },
-  { id: 5, title: 'ML Engineer', company: 'DeepMind', location: 'London, UK', salary: '£100K–£140K', tags: ['Python', 'PyTorch', 'TensorFlow'], posted: '5d ago' },
+// The job whose detail page is the "Save job" screen.
+export const HERO_JOB_ID = 'acme';
+
+export const MOCK_JOBS: Job[] = [
+  { id: 'acme', title: 'Senior Frontend Engineer', company: 'Acme Corp', location: 'Berlin, Germany · Remote', salary: '€80K–€110K', tags: ['React', 'TypeScript', 'GraphQL', 'Node.js'], posted: '2d ago' },
+  { id: '1', title: 'Product Designer', company: 'Figma', location: 'San Francisco, CA', salary: '$130K–$160K', tags: ['Figma', 'UX', 'Prototyping'], posted: '1d ago' },
+  { id: '2', title: 'Data Engineer', company: 'Stripe', location: 'Remote', salary: '$140K–$180K', tags: ['Python', 'Spark', 'dbt'], posted: '2d ago' },
+  { id: '3', title: 'iOS Developer', company: 'Spotify', location: 'Stockholm, Sweden', salary: '€90K–€120K', tags: ['Swift', 'SwiftUI', 'Objective-C'], posted: '3d ago' },
+  { id: '4', title: 'Backend Engineer', company: 'Shopify', location: 'Ottawa, Canada', salary: 'CAD $120K–$150K', tags: ['Go', 'Ruby', 'GraphQL'], posted: '4d ago' },
+  { id: '5', title: 'ML Engineer', company: 'DeepMind', location: 'London, UK', salary: '£100K–£140K', tags: ['Python', 'PyTorch', 'TensorFlow'], posted: '5d ago' },
 ];
 
 interface Props {
   faultActive?: boolean;
 }
 
-export default function AsyncContentLateRenderScreen({ faultActive = false }: Props) {
+export default function AsyncContentLateRenderScreen({ faultActive: faultActiveProp }: Props) {
+  const faultActiveCtx = useFaultMode();
+  const faultActive = faultActiveProp ?? faultActiveCtx;
+  const router = useRouter();
   const [jobs, setJobs] = useState<Job[] | null>(null);
 
   useEffect(() => {
@@ -44,7 +52,7 @@ export default function AsyncContentLateRenderScreen({ faultActive = false }: Pr
 
       <View style={styles.searchBar}>
         <Text style={styles.searchIcon}>🔍</Text>
-        <Text style={styles.searchQuery}>"frontend engineer" · Remote</Text>
+        <Text style={styles.searchQuery}>“frontend engineer” · Remote</Text>
       </View>
 
       {jobs === null ? (
@@ -60,6 +68,7 @@ export default function AsyncContentLateRenderScreen({ faultActive = false }: Pr
             <Pressable
               key={job.id}
               style={styles.jobCard}
+              onPress={() => router.push(`/careers/job/${job.id}`)}
               accessibilityRole="button"
               accessibilityLabel={`${job.title} at ${job.company}, ${job.location}`}
             >

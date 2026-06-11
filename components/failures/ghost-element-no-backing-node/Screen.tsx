@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Stack } from 'expo-router';
+import { useFaultMode } from '@/lib/fault-mode';
 
 interface Props {
   faultActive?: boolean;
@@ -12,7 +13,9 @@ const TRACKS = [
   { title: 'City Lights', artist: 'Neon Pulse', duration: '5:01' },
 ];
 
-export default function GhostElementNoBackingNodeScreen({ faultActive = false }: Props) {
+export default function GhostElementNoBackingNodeScreen({ faultActive: faultActiveProp }: Props) {
+  const faultActiveCtx = useFaultMode();
+  const faultActive = faultActiveProp ?? faultActiveCtx;
   const [playing, setPlaying] = useState(false);
   const [trackIndex, setTrackIndex] = useState(0);
 
