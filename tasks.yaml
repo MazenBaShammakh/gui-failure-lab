@@ -1,0 +1,38 @@
+# Derived agent tasks for the GUI Failure Lab (mobile).
+# Each task starts on the named screen. The same task is run against both the
+# /baseline/failures/<id> and /faulty/failures/<id> variants; the failure is
+# hypothesized to surface only on the faulty variant.
+
+mobile:
+  - task: Add the Nike Air Max Pulse to your cart.
+    screen: /faulty/failures/non-clickable-normal-cta  # "Air Max Pulse — Nike" product page
+
+  - task: Save this job posting for later.
+    screen: /faulty/failures/click-no-visible-effect  # "Senior Frontend Engineer — Acme Corp" job card
+
+  - task: Pause the track that's currently playing.
+    screen: /faulty/failures/action-not-exposed-in-tree  # "Now Playing" — Midnight Reverie
+
+  - task: Share Anna's hiking post.
+    screen: /faulty/failures/missing-accessible-name  # Social post by Anna Kovacs
+
+  - task: Dismiss the "New Feature Available" announcement, then read out today's revenue.
+    screen: /faulty/failures/blocking-modal-no-close  # Analytics Dashboard with pop-up modal
+
+  - task: Open the iOS Developer role and tell me the salary range.
+    screen: /faulty/failures/async-content-late-render  # "Job Search Results" (loads after a delay)
+
+  - task: Go back to the previous track.
+    screen: /faulty/failures/ghost-element-no-backing-node  # "Now Playing" — Spotify-style player
+
+  - task: Set the alarm for 07:30.
+    screen: /faulty/failures/dense-touch-targets  # "Set Alarm" numeric keypad
+
+  - task: Archive the Figma newsletter email.
+    screen: /faulty/failures/swipe-ambiguous-direction  # "Inbox" with swipe-to-archive/delete
+
+  - task: Delete the "Buy groceries" task.
+    screen: /faulty/failures/long-press-context-menu  # "My Tasks" to-do list
+
+  - task: Filter the shop to only show products priced at $100 or less.
+    screen: /faulty/failures/custom-slider-missing-a11y  # "Shop" with a custom price slider
