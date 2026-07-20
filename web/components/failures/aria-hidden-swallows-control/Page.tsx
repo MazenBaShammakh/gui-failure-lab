@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Breadcrumb } from '@/components/Breadcrumb';
+import { BackLink } from '@/components/BackLink';
 
 interface Props {
   faultActive?: boolean;
@@ -13,32 +13,7 @@ export default function AriaHiddenSwallowsControlPage({ faultActive = false }: P
   return (
     <div className="min-h-screen bg-gray-50 py-10">
       <div className="mx-auto max-w-xl px-4">
-        <Breadcrumb
-          crumbs={[
-            { label: 'Home', href: '/' },
-            { label: 'failures' },
-            { label: 'M_ARIA_HIDDEN_SWALLOWS_CONTROL' },
-            { label: faultActive ? 'Faulty' : 'Baseline' },
-          ]}
-        />
-
-        <div
-          className={`rounded-lg border px-4 py-3 mb-6 text-sm flex items-center gap-2 ${
-            faultActive
-              ? 'bg-red-50 border-red-200 text-red-700'
-              : 'bg-green-50 border-green-200 text-green-700'
-          }`}
-        >
-          <span className="font-semibold">
-            {faultActive ? 'Faulty — fault active' : 'Baseline — no fault'}
-          </span>
-          <span className="text-gray-400">·</span>
-          <span>
-            {faultActive
-              ? 'Desktop Alerts toggle is removed from the accessibility tree'
-              : 'Desktop Alerts toggle is reachable in the accessibility tree'}
-          </span>
-        </div>
+        <BackLink />
 
         <div className="bg-white rounded-xl border border-gray-200 p-7">
           <h1 className="text-xl font-semibold text-gray-900 mb-6">Notification Settings</h1>
@@ -80,7 +55,7 @@ export default function AriaHiddenSwallowsControlPage({ faultActive = false }: P
               }`}
             >
               <span
-                className={`absolute top-0.5 h-5 w-5 rounded-full bg-white transition-transform ${
+                className={`absolute top-0.5 left-0 h-5 w-5 rounded-full bg-white transition-transform ${
                   desktopAlerts ? 'translate-x-5' : 'translate-x-0.5'
                 }`}
               />

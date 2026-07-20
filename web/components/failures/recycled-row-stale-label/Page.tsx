@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Breadcrumb } from '@/components/Breadcrumb';
+import { BackLink } from '@/components/BackLink';
 import { useWindowedList } from '@/lib/mock-virtual-list';
 
 interface Props {
@@ -28,20 +28,20 @@ function Row({
   top: number;
   faultActive: boolean;
 }) {
-  const [a11yLabel, setA11yLabel] = useState(item.sender);
+  const [delayedLabel, setDelayedLabel] = useState(item.sender);
 
   useEffect(() => {
-    if (faultActive) {
-      // FAULT: the visible text below updates immediately (it's rendered
-      // straight from `item`), but the accessible name is only refreshed by
-      // this effect, one tick after the recycled DOM node gets reassigned to
-      // new data. Mid-scroll, the a11y-tree label can point at the row's
-      // previous occupant while the on-screen text has already moved on.
-      const timer = setTimeout(() => setA11yLabel(item.sender), 350);
-      return () => clearTimeout(timer);
-    }
-    setA11yLabel(item.sender);
+    if (!faultActive) return;
+    // FAULT: the visible text below updates immediately (it's rendered
+    // straight from `item`), but the accessible name is only refreshed by
+    // this effect, one tick after the recycled DOM node gets reassigned to
+    // new data. Mid-scroll, the a11y-tree label can point at the row's
+    // previous occupant while the on-screen text has already moved on.
+    const timer = setTimeout(() => setDelayedLabel(item.sender), 350);
+    return () => clearTimeout(timer);
   }, [item.sender, faultActive]);
+
+  const a11yLabel = faultActive ? delayedLabel : item.sender;
 
   return (
     <button
@@ -68,32 +68,7 @@ export default function RecycledRowStaleLabelPage({ faultActive = false }: Props
   return (
     <div className="min-h-screen bg-gray-50 py-10">
       <div className="mx-auto max-w-xl px-4">
-        <Breadcrumb
-          crumbs={[
-            { label: 'Home', href: '/' },
-            { label: 'failures' },
-            { label: 'B_RECYCLED_ROW_STALE_LABEL' },
-            { label: faultActive ? 'Faulty' : 'Baseline' },
-          ]}
-        />
-
-        <div
-          className={`rounded-lg border px-4 py-3 mb-6 text-sm flex items-center gap-2 ${
-            faultActive
-              ? 'bg-red-50 border-red-200 text-red-700'
-              : 'bg-green-50 border-green-200 text-green-700'
-          }`}
-        >
-          <span className="font-semibold">
-            {faultActive ? 'Faulty — fault active' : 'Baseline — no fault'}
-          </span>
-          <span className="text-gray-400">·</span>
-          <span>
-            {faultActive
-              ? 'A recycled row\'s accessible name lags behind its visible text'
-              : 'Accessible name always matches visible text'}
-          </span>
-        </div>
+        <BackLink />
 
         <div className="bg-white rounded-xl border border-gray-200 p-7">
           <h1 className="text-xl font-semibold text-gray-900 mb-1">Inbox</h1>

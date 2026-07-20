@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Breadcrumb } from '@/components/Breadcrumb';
+import { BackLink } from '@/components/BackLink';
 
 interface Props {
   faultActive?: boolean;
@@ -26,32 +26,7 @@ export default function OverloadedIconMultiPurposePage({ faultActive = false }: 
   return (
     <div className="min-h-screen bg-gray-50 py-10">
       <div className="mx-auto max-w-xl px-4">
-        <Breadcrumb
-          crumbs={[
-            { label: 'Home', href: '/' },
-            { label: 'failures' },
-            { label: 'M_OVERLOADED_ICON_MULTI_PURPOSE' },
-            { label: faultActive ? 'Faulty' : 'Baseline' },
-          ]}
-        />
-
-        <div
-          className={`rounded-lg border px-4 py-3 mb-6 text-sm flex items-center gap-2 ${
-            faultActive
-              ? 'bg-red-50 border-red-200 text-red-700'
-              : 'bg-green-50 border-green-200 text-green-700'
-          }`}
-        >
-          <span className="font-semibold">
-            {faultActive ? 'Faulty — fault active' : 'Baseline — no fault'}
-          </span>
-          <span className="text-gray-400">·</span>
-          <span>
-            {faultActive
-              ? 'The single ☰ icon opens both search and menu, unpredictably'
-              : 'Separate icons for menu and search'}
-          </span>
-        </div>
+        <BackLink />
 
         <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
           <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">

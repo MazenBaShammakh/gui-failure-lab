@@ -1,0 +1,8 @@
+taxonomy/
+specs/
+node_modules/
+docs/
+.claude/
+package-lock.json
+package.json
+.github/

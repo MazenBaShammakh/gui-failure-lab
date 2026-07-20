@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Breadcrumb } from '@/components/Breadcrumb';
+import { BackLink } from '@/components/BackLink';
 
 interface Props {
   faultActive?: boolean;
@@ -13,33 +13,7 @@ export default function NonClickableCtaPage({ faultActive = false }: Props) {
   return (
     <div className="min-h-screen bg-gray-50 py-10">
       <div className="mx-auto max-w-xl px-4">
-        <Breadcrumb
-          crumbs={[
-            { label: 'Home', href: '/' },
-            { label: 'failures' },
-            { label: 'B_NON_CLICKABLE_NORMAL_CTA' },
-            { label: faultActive ? 'Faulty' : 'Baseline' },
-          ]}
-        />
-
-        {/* Fault status banner */}
-        <div
-          className={`rounded-lg border px-4 py-3 mb-6 text-sm flex items-center gap-2 ${
-            faultActive
-              ? 'bg-red-50 border-red-200 text-red-700'
-              : 'bg-green-50 border-green-200 text-green-700'
-          }`}
-        >
-          <span className="font-semibold">
-            {faultActive ? 'Faulty — fault active' : 'Baseline — no fault'}
-          </span>
-          <span className="text-gray-400">·</span>
-          <span>
-            {faultActive
-              ? 'Place Order button is non-responsive'
-              : 'Place Order button works normally'}
-          </span>
-        </div>
+        <BackLink />
 
         {/* Checkout card */}
         <div className="bg-white rounded-xl border border-gray-200 p-7">

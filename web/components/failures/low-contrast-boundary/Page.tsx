@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Breadcrumb } from '@/components/Breadcrumb';
+import { BackLink } from '@/components/BackLink';
 
 interface Props {
   faultActive?: boolean;
@@ -13,32 +13,7 @@ export default function LowContrastBoundaryPage({ faultActive = false }: Props) 
   return (
     <div className="min-h-screen bg-gray-50 py-10">
       <div className="mx-auto max-w-xl px-4">
-        <Breadcrumb
-          crumbs={[
-            { label: 'Home', href: '/' },
-            { label: 'failures' },
-            { label: 'V_LOW_CONTRAST_BOUNDARY' },
-            { label: faultActive ? 'Faulty' : 'Baseline' },
-          ]}
-        />
-
-        <div
-          className={`rounded-lg border px-4 py-3 mb-6 text-sm flex items-center gap-2 ${
-            faultActive
-              ? 'bg-red-50 border-red-200 text-red-700'
-              : 'bg-green-50 border-green-200 text-green-700'
-          }`}
-        >
-          <span className="font-semibold">
-            {faultActive ? 'Faulty — fault active' : 'Baseline — no fault'}
-          </span>
-          <span className="text-gray-400">·</span>
-          <span>
-            {faultActive
-              ? 'Subscribe button boundary is ~1.5:1 contrast against its background'
-              : 'Subscribe button has normal contrast'}
-          </span>
-        </div>
+        <BackLink />
 
         {/* FAULT: faulty variant sets the CTA's fill/border near-isoluminant
             with the card background. DOM, label, and handler are unchanged —

@@ -4,7 +4,7 @@ import { failures } from '@/lib/failures';
 
 export const metadata: Metadata = {
   title: 'GUI Failure Lab',
-  description: 'Index of all failure scenarios — baseline and faulty variants.',
+  description: 'Index of all failure scenarios for the current baseline/faulty mode.',
 };
 
 const platformColors: Record<string, string> = {
@@ -28,7 +28,7 @@ export default function IndexPage() {
       <div className="mx-auto max-w-4xl px-6 py-12">
         <div className="mb-10">
           <h1 className="text-3xl font-bold text-gray-900 mb-1">GUI Failure Lab</h1>
-          <p className="text-sm text-gray-500">Web · Next.js 16</p>
+          <p className="text-sm text-gray-500 mb-4">Web · Next.js 16</p>
         </div>
 
         <h2 className="text-base font-semibold text-gray-700 mb-4">
@@ -59,20 +59,12 @@ export default function IndexPage() {
 
               <div className="flex flex-col gap-2 shrink-0">
                 {f.implemented ? (
-                  <>
-                    <Link
-                      href={`/baseline/failures/${id}`}
-                      className="text-xs font-medium px-4 py-1.5 rounded-lg bg-green-600 text-white hover:bg-green-700 transition-colors text-center"
-                    >
-                      Baseline
-                    </Link>
-                    <Link
-                      href={`/faulty/failures/${id}`}
-                      className="text-xs font-medium px-4 py-1.5 rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors text-center"
-                    >
-                      Faulty
-                    </Link>
-                  </>
+                  <Link
+                    href={`/failures/${id}`}
+                    className="text-xs font-medium px-4 py-1.5 rounded-lg text-white transition-colors text-center bg-blue-600 hover:bg-blue-700"
+                  >
+                    Open
+                  </Link>
                 ) : (
                   <span className="text-xs text-gray-400 italic">not implemented</span>
                 )}

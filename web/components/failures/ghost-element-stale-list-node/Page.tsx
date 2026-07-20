@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { Breadcrumb } from '@/components/Breadcrumb';
+import { useState } from 'react';
+import { BackLink } from '@/components/BackLink';
 import { useWindowedList } from '@/lib/mock-virtual-list';
 
 interface Props {
@@ -27,18 +27,23 @@ export default function GhostElementStaleListNodePage({ faultActive = false }: P
   });
 
   const [renderedRange, setRenderedRange] = useState({ first: firstVisible, last: lastVisible });
+  const [prevWindow, setPrevWindow] = useState({ first: firstVisible, last: lastVisible });
 
-  useEffect(() => {
+  // Derived-state-during-render (React's recommended replacement for
+  // effect+setState): recompute only when the windowed scroll range actually
+  // changed, avoiding an extra render round-trip through an effect.
+  if (firstVisible !== prevWindow.first || lastVisible !== prevWindow.last) {
+    setPrevWindow({ first: firstVisible, last: lastVisible });
+    // FAULT: in faulty mode the rendered range only ever grows — rows that
+    // scroll out of view are never pruned from the DOM/a11y tree. They keep
+    // their original (now stale) bounding boxes and remain fully actionable,
+    // so the tree accumulates phantom targets for content no longer on screen.
     setRenderedRange(prev =>
       faultActive
         ? { first: Math.min(prev.first, firstVisible), last: Math.max(prev.last, lastVisible) }
         : { first: firstVisible, last: lastVisible }
     );
-    // FAULT: in faulty mode the rendered range only ever grows — rows that
-    // scroll out of view are never pruned from the DOM/a11y tree. They keep
-    // their original (now stale) bounding boxes and remain fully actionable,
-    // so the tree accumulates phantom targets for content no longer on screen.
-  }, [firstVisible, lastVisible, faultActive]);
+  }
 
   const indices = Array.from(
     { length: renderedRange.last - renderedRange.first + 1 },
@@ -48,32 +53,7 @@ export default function GhostElementStaleListNodePage({ faultActive = false }: P
   return (
     <div className="min-h-screen bg-gray-50 py-10">
       <div className="mx-auto max-w-xl px-4">
-        <Breadcrumb
-          crumbs={[
-            { label: 'Home', href: '/' },
-            { label: 'failures' },
-            { label: 'B_GHOST_ELEMENT_STALE_LIST_NODE' },
-            { label: faultActive ? 'Faulty' : 'Baseline' },
-          ]}
-        />
-
-        <div
-          className={`rounded-lg border px-4 py-3 mb-6 text-sm flex items-center gap-2 ${
-            faultActive
-              ? 'bg-red-50 border-red-200 text-red-700'
-              : 'bg-green-50 border-green-200 text-green-700'
-          }`}
-        >
-          <span className="font-semibold">
-            {faultActive ? 'Faulty — fault active' : 'Baseline — no fault'}
-          </span>
-          <span className="text-gray-400">·</span>
-          <span>
-            {faultActive
-              ? 'Scrolled-past rows stay in the DOM/a11y tree as phantom nodes'
-              : 'Only currently visible rows exist in the DOM'}
-          </span>
-        </div>
+        <BackLink />
 
         <div className="bg-white rounded-xl border border-gray-200 p-7">
           <h1 className="text-xl font-semibold text-gray-900 mb-1">Inbox</h1>
