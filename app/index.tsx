@@ -9,15 +9,26 @@ interface AppTile {
   tint: string;
 }
 
+// Apps whose landing screen is itself a failure example point at a fault-free
+// in-app hub (`/<app>/home`) that links to every screen in the app, so an agent
+// can reach each one by normal tap-through navigation. Apps with a real,
+// navigable landing screen (Music, Calendar) or a single screen (App Store)
+// point straight at their route. Hrefs are cast as Href because expo-router's
+// typed routes only regenerate once the files exist.
 const APPS: AppTile[] = [
-  { name: 'Shop', icon: '🛍️', href: '/shop', tint: '#e8f5e9' },
-  { name: 'Careers', icon: '💼', href: '/careers', tint: '#e3f2fd' },
+  { name: 'Shop', icon: '🛍️', href: '/shop/home' as Href, tint: '#e8f5e9' },
+  { name: 'Careers', icon: '💼', href: '/careers/home' as Href, tint: '#e3f2fd' },
   { name: 'Music', icon: '🎵', href: '/music', tint: '#f3e5f5' },
-  { name: 'Social', icon: '💬', href: '/social', tint: '#e1f5fe' },
-  { name: 'Mail', icon: '✉️', href: '/mail', tint: '#fff3e0' },
-  { name: 'Tasks', icon: '✅', href: '/tasks', tint: '#e0f2f1' },
-  { name: 'Clock', icon: '⏰', href: '/clock', tint: '#ede7f6' },
-  { name: 'Dashboard', icon: '📊', href: '/dashboard', tint: '#fce4ec' },
+  { name: 'Social', icon: '💬', href: '/social/home' as Href, tint: '#e1f5fe' },
+  { name: 'Mail', icon: '✉️', href: '/mail/home' as Href, tint: '#fff3e0' },
+  { name: 'Tasks', icon: '✅', href: '/tasks/home' as Href, tint: '#e0f2f1' },
+  { name: 'Clock', icon: '⏰', href: '/clock/home' as Href, tint: '#ede7f6' },
+  { name: 'Dashboard', icon: '📊', href: '/dashboard/home' as Href, tint: '#fce4ec' },
+  { name: 'App Store', icon: '📦', href: '/appstore' as Href, tint: '#eceff1' },
+  { name: 'Photos', icon: '🖼️', href: '/photos/home' as Href, tint: '#f1f8e9' },
+  { name: 'Maps', icon: '🗺️', href: '/maps/home' as Href, tint: '#e8eaf6' },
+  { name: 'Banking', icon: '🏦', href: '/banking/home' as Href, tint: '#e0f7fa' },
+  { name: 'Calendar', icon: '📅', href: '/calendar' as Href, tint: '#fff8e1' },
 ];
 
 export default function HomeScreen() {

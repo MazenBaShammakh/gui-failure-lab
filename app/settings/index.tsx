@@ -1,5 +1,6 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native';
-import { Stack } from 'expo-router';
+import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
+import { Link, Stack } from 'expo-router';
+import type { Href } from 'expo-router';
 import { useFaultModeContext, type FaultMode } from '@/lib/fault-mode';
 
 const OPTIONS: { value: FaultMode; label: string; hint: string }[] = [
@@ -7,11 +8,20 @@ const OPTIONS: { value: FaultMode; label: string; hint: string }[] = [
   { value: 'faulty', label: 'Faulty', hint: 'Screens render their defective variant for evaluation.' },
 ];
 
+const PAGES: { href: Href; label: string; hint: string }[] = [
+  { href: '/settings/preferences' as Href, label: 'Preferences', hint: 'Dark mode & display' },
+  { href: '/settings/notifications' as Href, label: 'Notifications', hint: 'Push & email alerts' },
+  { href: '/settings/apps' as Href, label: 'Installed apps', hint: 'Manage your apps' },
+  { href: '/settings/licenses' as Href, label: 'Open-source licenses', hint: 'Third-party notices' },
+  { href: '/settings/help' as Href, label: 'Help', hint: "What's new & support" },
+  { href: '/settings/account' as Href, label: 'Delete account', hint: 'Permanently remove your account' },
+];
+
 export default function SettingsScreen() {
   const { mode, setMode } = useFaultModeContext();
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <Stack.Screen options={{ title: 'Settings' }} />
 
       <Text style={styles.sectionLabel}>EVALUATION MODE</Text>
@@ -42,12 +52,32 @@ export default function SettingsScreen() {
       <Text style={styles.footnote}>
         Current mode: {mode}. This setting is global and persists across the app.
       </Text>
-    </View>
+
+      <Text style={[styles.sectionLabel, styles.sectionSpaced]}>SETTINGS</Text>
+      <View style={styles.card}>
+        {PAGES.map((page, i) => (
+          <Link key={page.href as string} href={page.href} asChild>
+            <Pressable accessibilityRole="link" accessibilityLabel={page.label}>
+              {/* Row layout lives on an inner View: <Link asChild> renders an
+                  <a> whose flex layout is unreliable, so keep it off the anchor. */}
+              <View style={[styles.row, i > 0 && styles.rowBorder]}>
+                <View style={styles.rowText}>
+                  <Text style={styles.rowLabel}>{page.label}</Text>
+                  <Text style={styles.rowHint}>{page.hint}</Text>
+                </View>
+                <Text style={styles.chevron}>›</Text>
+              </View>
+            </Pressable>
+          </Link>
+        ))}
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f2f3f7', padding: 20 },
+  container: { flex: 1, backgroundColor: '#f2f3f7' },
+  content: { padding: 20 },
   sectionLabel: {
     fontSize: 12,
     color: '#888',
@@ -56,6 +86,8 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     marginLeft: 4,
   },
+  sectionSpaced: { marginTop: 24 },
+  chevron: { fontSize: 22, color: '#bbb' },
   card: {
     backgroundColor: '#fff',
     borderRadius: 14,

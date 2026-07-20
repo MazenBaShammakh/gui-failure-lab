@@ -19,6 +19,15 @@ const RECENT: { id: string; href: Href; title: string; artist: string; emoji: st
   },
 ];
 
+const SECTIONS: { id: string; href: Href; label: string; emoji: string }[] = [
+  { id: 'playlist', href: '/music/playlist' as Href, label: 'Playlists', emoji: '🎼' },
+  { id: 'album', href: '/music/album' as Href, label: 'Albums', emoji: '💿' },
+  { id: 'browse', href: '/music/browse' as Href, label: 'Browse', emoji: '🧭' },
+  { id: 'discover', href: '/music/discover' as Href, label: 'Discover', emoji: '✨' },
+  { id: 'queue', href: '/music/queue' as Href, label: 'Up Next', emoji: '↕️' },
+  { id: 'lyrics', href: '/music/lyrics' as Href, label: 'Lyrics', emoji: '📝' },
+];
+
 export default function MusicLibraryScreen() {
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
@@ -42,6 +51,25 @@ export default function MusicLibraryScreen() {
           </Pressable>
         </Link>
       ))}
+
+      <Text style={[styles.heading, styles.headingSpaced]}>Library</Text>
+      {SECTIONS.map((s) => (
+        <Link key={s.id} href={s.href} asChild>
+          <Pressable
+            style={styles.row}
+            accessibilityRole="link"
+            accessibilityLabel={`Open ${s.label}`}
+          >
+            <View style={styles.art}>
+              <Text style={styles.artEmoji}>{s.emoji}</Text>
+            </View>
+            <View style={styles.info}>
+              <Text style={styles.title}>{s.label}</Text>
+            </View>
+            <Text style={styles.chevron}>›</Text>
+          </Pressable>
+        </Link>
+      ))}
     </ScrollView>
   );
 }
@@ -57,6 +85,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1,
     marginBottom: 12,
   },
+  headingSpaced: { marginTop: 24 },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
