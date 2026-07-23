@@ -1,0 +1,39 @@
+<UserControl x:Class="desktop.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Background="{StaticResource Canvas}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel MaxWidth="620" Margin="40,32,40,48">
+
+                <Button Content="← Back" Style="{StaticResource SubtleButton}"
+                        HorizontalAlignment="Left" Margin="-8,0,0,16"
+                        Command="{Binding GoBackCommand}"/>
+
+                <TextBlock Text="Settings" Style="{StaticResource Title}" Margin="0,0,0,24"/>
+
+                <Border Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="Lab condition" Style="{StaticResource SectionHeading}" Margin="0,0,0,6"/>
+                        <TextBlock Style="{StaticResource Body}" Foreground="{StaticResource InkMuted}"
+                                   Text="Applies to every application in this workspace. Screens read this value when they open, so return to an application after changing it."
+                                   Margin="0,0,0,16"/>
+
+                        <CheckBox IsChecked="{Binding IsFaulty}"
+                                  AutomationProperties.Name="Faulty mode"
+                                  Content="Faulty mode" FontSize="13" Margin="0,0,0,10"/>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Active condition: " Style="{StaticResource Body}"
+                                       Foreground="{StaticResource InkMuted}"/>
+                            <TextBlock Text="{Binding ModeLabel}" Style="{StaticResource Body}" FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <TextBlock Style="{StaticResource Subtitle}" Margin="2,14,0,0" TextWrapping="Wrap"
+                           Text="{Binding StatePath, StringFormat='Persisted to {0}'}"/>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

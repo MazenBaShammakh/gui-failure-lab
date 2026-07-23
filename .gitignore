@@ -1,5 +1,5 @@
 taxonomy/
-specs/
+# specs/
 node_modules/
 docs/
 .claude/

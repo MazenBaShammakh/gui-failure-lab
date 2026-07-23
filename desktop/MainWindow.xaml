@@ -2,19 +2,59 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:desktop.ViewModels"
-        xmlns:vmf="clr-namespace:desktop.ViewModels.Failures"
+        xmlns:vmFiles="clr-namespace:desktop.ViewModels.Apps.Files"
+        xmlns:vmNotes="clr-namespace:desktop.ViewModels.Apps.Notes"
+        xmlns:vmStore="clr-namespace:desktop.ViewModels.Apps.Store"
         xmlns:views="clr-namespace:desktop.Views"
-        xmlns:vf="clr-namespace:desktop.Views.Failures"
-        Title="GUI Failure Lab" Height="720" Width="1280"
-        WindowStartupLocation="CenterScreen">
+        xmlns:vFiles="clr-namespace:desktop.Views.Apps.Files"
+        xmlns:vNotes="clr-namespace:desktop.Views.Apps.Notes"
+        xmlns:vStore="clr-namespace:desktop.Views.Apps.Store"
+        Title="Workspace" Height="720" Width="1180"
+        WindowStartupLocation="CenterScreen"
+        AutomationProperties.Name="Workspace">
     <Window.Resources>
-        <DataTemplate DataType="{x:Type vm:HomeViewModel}">
-            <views:HomeView />
+
+        <!-- Shell -->
+        <DataTemplate DataType="{x:Type vm:SpringboardViewModel}">
+            <views:SpringboardView/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type vmf:NonClickableCtaViewModel}">
-            <vf:NonClickableCtaView />
+        <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
+            <views:SettingsView/>
         </DataTemplate>
+
+        <!-- Per-app hubs all share the one fault-free directory view -->
+        <DataTemplate DataType="{x:Type vmFiles:FilesHubViewModel}">
+            <views:AppHubView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vmNotes:NotesHubViewModel}">
+            <views:AppHubView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vmStore:StoreHubViewModel}">
+            <views:AppHubView/>
+        </DataTemplate>
+
+        <!-- Files -->
+        <DataTemplate DataType="{x:Type vmFiles:FileLibraryViewModel}">
+            <vFiles:FileLibraryView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vmFiles:SyncViewModel}">
+            <vFiles:SyncView/>
+        </DataTemplate>
+
+        <!-- Notes -->
+        <DataTemplate DataType="{x:Type vmNotes:NoteEditorViewModel}">
+            <vNotes:NoteEditorView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vmNotes:FormatToolbarViewModel}">
+            <vNotes:FormatToolbarView/>
+        </DataTemplate>
+
+        <!-- Store -->
+        <DataTemplate DataType="{x:Type vmStore:CheckoutViewModel}">
+            <vStore:CheckoutView/>
+        </DataTemplate>
+
     </Window.Resources>
 
-    <ContentControl Content="{Binding CurrentPage}" />
+    <ContentControl Content="{Binding CurrentPage}"/>
 </Window>

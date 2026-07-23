@@ -1,0 +1,82 @@
+<UserControl x:Class="desktop.Views.Apps.Notes.NoteEditorView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:desktop.Controls"
+             AutomationProperties.AutomationId="{Binding DefectMarker}">
+    <Grid Background="{StaticResource Canvas}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}"
+                BorderThickness="0,0,0,1" Padding="16,10">
+            <StackPanel Orientation="Horizontal">
+                <Button Content="← Notes" Style="{StaticResource SubtleButton}"
+                        Command="{Binding GoBackCommand}"/>
+                <TextBlock Text="Q3 planning" FontSize="13" FontWeight="SemiBold" Margin="14,0,0,0"
+                           Foreground="{StaticResource Ink}" VerticalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Custom-drawn menu bar -->
+        <Border Grid.Row="1" Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}"
+                BorderThickness="0,0,0,1" Padding="10,2">
+            <StackPanel Orientation="Horizontal">
+                <Button x:Name="FileMenuButton" Content="File" Padding="12,6"
+                        AutomationProperties.Name="File"
+                        Style="{StaticResource SubtleButton}"
+                        Command="{Binding ToggleFileMenuCommand}"/>
+
+                <!--
+                    The dropdown lives in a Popup, i.e. its own transient borderless
+                    top-level window, exactly as a native menu does. MenuSurface is
+                    what decides whether that window is registered as an accessible
+                    menu at all — see Controls/MenuSurface.cs.
+                -->
+                <Popup IsOpen="{Binding IsFileMenuOpen, Mode=TwoWay}"
+                       PlacementTarget="{Binding ElementName=FileMenuButton}"
+                       Placement="Bottom" StaysOpen="False" AllowsTransparency="True">
+                    <controls:MenuSurface MenuName="File menu">
+                        <Border Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}"
+                                BorderThickness="1" CornerRadius="6" Padding="4" Margin="0,2,6,6">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="12" ShadowDepth="2" Opacity="0.16"/>
+                            </Border.Effect>
+                            <StackPanel MinWidth="190">
+                                <Button Content="Save" HorizontalContentAlignment="Left" Padding="12,7"
+                                        AutomationProperties.Name="Save"
+                                        Style="{StaticResource SubtleButton}"
+                                        Command="{Binding SaveNoteCommand}"/>
+                                <Button Content="Export as PDF" HorizontalContentAlignment="Left" Padding="12,7"
+                                        AutomationProperties.Name="Export as PDF"
+                                        Style="{StaticResource SubtleButton}"
+                                        Command="{Binding ExportPdfCommand}"/>
+                                <Button Content="Print" HorizontalContentAlignment="Left" Padding="12,7"
+                                        AutomationProperties.Name="Print"
+                                        Style="{StaticResource SubtleButton}"
+                                        Command="{Binding PrintNoteCommand}"/>
+                            </StackPanel>
+                        </Border>
+                    </controls:MenuSurface>
+                </Popup>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="2" Background="{StaticResource Surface}" Margin="20" CornerRadius="8"
+                BorderBrush="{StaticResource Line}" BorderThickness="1">
+            <TextBox Text="{Binding NoteBody, Mode=TwoWay}"
+                     AutomationProperties.Name="Note body"
+                     AcceptsReturn="True" TextWrapping="Wrap" BorderThickness="0"
+                     Padding="18" FontSize="13" FontFamily="Consolas"
+                     VerticalScrollBarVisibility="Auto"/>
+        </Border>
+
+        <Border Grid.Row="3" Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}"
+                BorderThickness="0,1,0,0" Padding="20,8">
+            <TextBlock Text="{Binding StatusMessage}" FontSize="12" Foreground="{StaticResource Positive}"/>
+        </Border>
+    </Grid>
+</UserControl>

@@ -1,0 +1,140 @@
+<UserControl x:Class="desktop.Views.Apps.Notes.FormatToolbarView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             AutomationProperties.AutomationId="{Binding DefectMarker}">
+    <UserControl.Resources>
+        <!--
+            Icon-only toolbar button. The accessible name and the tooltip carry the
+            same string in both variants — only the *visible* caption is dropped
+            when the fault is armed, leaving a row of near-identical glyphs that a
+            screenshot cannot disambiguate without hovering and waiting.
+        -->
+        <Style x:Key="ToolButton" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Width" Value="76"/>
+            <Setter Property="Height" Value="62"/>
+            <Setter Property="Margin" Value="0,0,6,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Chrome" Background="Transparent" CornerRadius="6" BorderThickness="1"
+                                BorderBrush="Transparent">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Chrome" Property="Background" Value="{StaticResource AccentSoft}"/>
+                                <Setter TargetName="Chrome" Property="BorderBrush" Value="{StaticResource Line}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Background="{StaticResource Canvas}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}"
+                BorderThickness="0,0,0,1" Padding="16,10">
+            <StackPanel Orientation="Horizontal">
+                <Button Content="← Notes" Style="{StaticResource SubtleButton}"
+                        Command="{Binding GoBackCommand}"/>
+                <TextBlock Text="Formatting" FontSize="13" FontWeight="SemiBold" Margin="14,0,0,0"
+                           Foreground="{StaticResource Ink}" VerticalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="1" Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}"
+                BorderThickness="0,0,0,1" Padding="14,8">
+            <StackPanel Orientation="Horizontal">
+
+                <Button Style="{StaticResource ToolButton}" ToolTip="Align left"
+                        AutomationProperties.Name="Align left"
+                        Command="{Binding ApplyCommand}" CommandParameter="Align left">
+                    <StackPanel>
+                        <TextBlock Text="≡" FontSize="21" HorizontalAlignment="Center" Foreground="{StaticResource Ink}"/>
+                        <TextBlock Text="Align left" FontSize="10" HorizontalAlignment="Center" Margin="0,4,0,0"
+                                   Foreground="{StaticResource InkMuted}"
+                                   Visibility="{Binding ShowCaptions, Converter={StaticResource BoolToVis}}"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Style="{StaticResource ToolButton}" ToolTip="Justify"
+                        AutomationProperties.Name="Justify"
+                        Command="{Binding ApplyCommand}" CommandParameter="Justify">
+                    <StackPanel>
+                        <TextBlock Text="☰" FontSize="21" HorizontalAlignment="Center" Foreground="{StaticResource Ink}"/>
+                        <TextBlock Text="Justify" FontSize="10" HorizontalAlignment="Center" Margin="0,4,0,0"
+                                   Foreground="{StaticResource InkMuted}"
+                                   Visibility="{Binding ShowCaptions, Converter={StaticResource BoolToVis}}"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Style="{StaticResource ToolButton}" ToolTip="Bulleted list"
+                        AutomationProperties.Name="Bulleted list"
+                        Command="{Binding ApplyCommand}" CommandParameter="Bulleted list">
+                    <StackPanel>
+                        <TextBlock Text="▤" FontSize="21" HorizontalAlignment="Center" Foreground="{StaticResource Ink}"/>
+                        <TextBlock Text="Bulleted list" FontSize="10" HorizontalAlignment="Center" Margin="0,4,0,0"
+                                   Foreground="{StaticResource InkMuted}"
+                                   Visibility="{Binding ShowCaptions, Converter={StaticResource BoolToVis}}"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Style="{StaticResource ToolButton}" ToolTip="Numbered list"
+                        AutomationProperties.Name="Numbered list"
+                        Command="{Binding ApplyCommand}" CommandParameter="Numbered list">
+                    <StackPanel>
+                        <TextBlock Text="▥" FontSize="21" HorizontalAlignment="Center" Foreground="{StaticResource Ink}"/>
+                        <TextBlock Text="Numbered list" FontSize="10" HorizontalAlignment="Center" Margin="0,4,0,0"
+                                   Foreground="{StaticResource InkMuted}"
+                                   Visibility="{Binding ShowCaptions, Converter={StaticResource BoolToVis}}"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Style="{StaticResource ToolButton}" ToolTip="Increase indent"
+                        AutomationProperties.Name="Increase indent"
+                        Command="{Binding ApplyCommand}" CommandParameter="Increase indent">
+                    <StackPanel>
+                        <TextBlock Text="▦" FontSize="21" HorizontalAlignment="Center" Foreground="{StaticResource Ink}"/>
+                        <TextBlock Text="Increase indent" FontSize="10" HorizontalAlignment="Center" Margin="0,4,0,0"
+                                   Foreground="{StaticResource InkMuted}"
+                                   Visibility="{Binding ShowCaptions, Converter={StaticResource BoolToVis}}"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Style="{StaticResource ToolButton}" ToolTip="Line spacing"
+                        AutomationProperties.Name="Line spacing"
+                        Command="{Binding ApplyCommand}" CommandParameter="Line spacing">
+                    <StackPanel>
+                        <TextBlock Text="▧" FontSize="21" HorizontalAlignment="Center" Foreground="{StaticResource Ink}"/>
+                        <TextBlock Text="Line spacing" FontSize="10" HorizontalAlignment="Center" Margin="0,4,0,0"
+                                   Foreground="{StaticResource InkMuted}"
+                                   Visibility="{Binding ShowCaptions, Converter={StaticResource BoolToVis}}"/>
+                    </StackPanel>
+                </Button>
+
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="2" Background="{StaticResource Surface}" Margin="20" CornerRadius="8"
+                BorderBrush="{StaticResource Line}" BorderThickness="1" Padding="20">
+            <StackPanel>
+                <TextBlock Text="Selected paragraph" Style="{StaticResource SectionHeading}" Margin="0,0,0,8"/>
+                <TextBlock Style="{StaticResource Body}" Foreground="{StaticResource InkMuted}"
+                           Text="Headcount is flat through September. The infrastructure migration slips to October unless the storage budget clears review this week."/>
+            </StackPanel>
+        </Border>
+
+        <Border Grid.Row="3" Background="{StaticResource Surface}" BorderBrush="{StaticResource Line}"
+                BorderThickness="0,1,0,0" Padding="20,8">
+            <TextBlock Text="{Binding StatusMessage}" FontSize="12" Foreground="{StaticResource Positive}"/>
+        </Border>
+    </Grid>
+</UserControl>
