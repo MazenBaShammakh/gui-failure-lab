@@ -1,4 +1,4 @@
-# gui-failure-lab
+# GUI Failure Lab
 
 Realistic web, mobile, and desktop apps that each host a deliberately injected
 GUI defect — switchable between a correct **baseline** and a defective

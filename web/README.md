@@ -1,4 +1,4 @@
-# gui-failure-lab — web
+# GUI Failure Lab — Web
 
 The Next.js app in the `gui-failure-lab` suite: one route per failure, each
 switchable between a correct **baseline** and a defective **faulty**

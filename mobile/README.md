@@ -1,4 +1,4 @@
-# gui-failure-lab — mobile
+# GUI Failure Lab — Mobile
 
 The Expo / React Native app in the `gui-failure-lab` suite: a single
 simulated phone with 13 in-app "apps" (Shop, Mail, Music, Banking, ...), each

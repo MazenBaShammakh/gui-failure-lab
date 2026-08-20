@@ -1,4 +1,4 @@
-# gui-failure-lab — desktop
+# GUI Failure Lab — Desktop
 
 The WPF (.NET) app in the `gui-failure-lab` suite. Early-stage relative to
 the web and mobile apps — fewer screens, and not yet at feature parity.
