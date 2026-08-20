@@ -25,16 +25,22 @@ public static class RouteRegistry
         // Store
         ["/store/home"] = nav => new StoreHubViewModel(nav),
         ["/store/checkout"] = nav => new CheckoutViewModel(nav),
+        ["/store/shipping"] = nav => new ShippingViewModel(nav),
+        ["/store/refund"] = nav => new RefundViewModel(nav),
 
         // Files
         ["/files/home"] = nav => new FilesHubViewModel(nav),
         ["/files/library"] = nav => new FileLibraryViewModel(nav),
         ["/files/sync"] = nav => new SyncViewModel(nav),
+        ["/files/cleanup"] = nav => new CleanupViewModel(nav),
+        ["/files/move"] = nav => new MoveViewModel(nav),
+        ["/files/versions"] = nav => new VersionsViewModel(nav),
 
         // Notes
         ["/notes/home"] = nav => new NotesHubViewModel(nav),
         ["/notes/editor"] = nav => new NoteEditorViewModel(nav),
         ["/notes/format"] = nav => new FormatToolbarViewModel(nav),
+        ["/notes/preferences"] = nav => new PreferencesViewModel(nav),
     };
 
     public static bool Exists(string route) => Map.ContainsKey(route);

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import CamouflagedSponsoredRows from '@/components/failures/camouflaged-sponsored-rows';
 
 interface Props {
   faultActive?: boolean;
@@ -114,6 +115,11 @@ export default function TextAsImageScreen({ faultActive: faultActiveProp }: Prop
           Opened: {ITEMS.find((i) => i.id === openedId)?.name}
         </Text>
       )}
+
+      {/* X23 (F-CNT-02): a results block whose sponsored rows are indistinguishable
+          from organic ones. Uses real Text for every price, so it is unaffected by
+          this screen's baked-image defect on the featured cards above. */}
+      <CamouflagedSponsoredRows />
     </ScrollView>
   );
 }

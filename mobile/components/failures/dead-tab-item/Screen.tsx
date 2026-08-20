@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import UntreedCloseSubscription from '@/components/failures/untreed-close-subscription';
 
 interface Props {
   faultActive?: boolean;
@@ -82,6 +83,11 @@ export default function DeadTabItemScreen({ faultActive: faultActiveProp }: Prop
 
       <ScrollView style={styles.body} contentContainerStyle={styles.bodyContent}>
         <TabContent tab={activeTab} />
+
+        {/* X33 (F-INS-01): GATED. The subscription modal only mounts once the
+            Chill Radio row is pressed, so the host's tab-switching task never
+            raises it. */}
+        <UntreedCloseSubscription />
       </ScrollView>
 
       <View style={styles.tabBar}>

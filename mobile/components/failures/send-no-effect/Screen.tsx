@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, Pressable, ScrollView } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import TinyOffsetCloseUpsell from '@/components/failures/tiny-offset-close-upsell';
 
 interface Props {
   faultActive?: boolean;
@@ -58,6 +59,10 @@ export default function SendNoEffectScreen({ faultActive: faultActiveProp }: Pro
         placeholder="Write your reply…"
         placeholderTextColor="#aaa"
       />
+
+      {/* X32 (F-INS-01): GATED. The upsell modal only mounts once "Attach" is
+          pressed, so the host's send task never raises it. */}
+      <TinyOffsetCloseUpsell />
 
       <Pressable
         onPress={handleSend}

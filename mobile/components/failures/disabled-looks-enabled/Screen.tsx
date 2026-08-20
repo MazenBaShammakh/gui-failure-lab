@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import OpaqueChartSegments from '@/components/failures/opaque-chart-segments';
 
 interface Props {
   faultActive?: boolean;
@@ -44,6 +45,10 @@ export default function DisabledLooksEnabledScreen({ faultActive: faultActivePro
             </View>
           ))}
         </View>
+
+        {/* X14 (F-PRC-05): traffic-sources chart. Sits above the Refresh button,
+            which is the host's defect and is never pressed by this task. */}
+        <OpaqueChartSegments />
 
         {/* Faulty: the button is disabled and styled identically to enabled, with
             NO accessibilityState.disabled — vision and the tree both see an

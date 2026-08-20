@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import VersionTokenReportRows from '@/components/failures/version-token-report-rows';
 
 interface Props {
   faultActive?: boolean;
@@ -29,6 +30,11 @@ export default function BannerOccludesCtaScreen({ faultActive: faultActiveProp }
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
         <Text style={styles.pageTitle}>Reports</Text>
         <Text style={styles.pageSubtitle}>Generate and export analytics reports.</Text>
+
+        {/* X22 (F-CNT-02): version history, high on the screen. The host's defect
+            is the sticky banner occluding the Export CTA at the bottom, which
+            this task never scrolls to. */}
+        <VersionTokenReportRows />
 
         <View style={styles.reportCard}>
           <Text style={styles.reportCardTitle}>Q2 Summary</Text>

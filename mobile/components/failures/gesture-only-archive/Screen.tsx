@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import UnsortedArchiveNoControls from '@/components/failures/unsorted-archive-no-controls';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   useSharedValue,
@@ -234,6 +235,10 @@ export default function GestureOnlyArchiveScreen({ faultActive: faultActiveProp 
           ✓ Archived email from {lastArchived}
         </Text>
       )}
+
+      {/* X24 (F-CNT-03): the archived-messages list. Read-only rows, so the
+          host's gesture-only archiving defect is not on this task's path. */}
+      <UnsortedArchiveNoControls />
     </View>
   );
 }

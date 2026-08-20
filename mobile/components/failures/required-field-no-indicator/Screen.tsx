@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, Pressable, ScrollView } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import SystemPhotoPickerCompose from '@/components/failures/system-photo-picker-compose';
 
 interface Props {
   faultActive?: boolean;
@@ -62,6 +63,11 @@ export default function RequiredFieldNoIndicatorScreen({ faultActive: faultActiv
         accessibilityLabel="Post text"
         multiline
       />
+
+      {/* X12 (F-PRC-04): GATED. The system photo picker is only mounted once
+          "Attach a photo" is pressed, so the host's publish task never raises
+          it. */}
+      <SystemPhotoPickerCompose />
 
       {/* Baseline: the required marker is visible before any submit attempt.
           Faulty: identical field, no asterisk/"Required" hint — its

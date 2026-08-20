@@ -38,10 +38,10 @@ public partial class FileLibraryViewModel : FailureScreenViewModel
 
     private static List<FileRow> BuildFiles()
     {
-        var rows = new List<FileRow>(400);
+        var rows = new List<FileRow>(120);
         var rng = new Random(20260722);
 
-        for (var i = 1; i <= 400; i++)
+        for (var i = 1; i <= 120; i++)
         {
             var kind = Kinds[i % Kinds.Length];
             var ext = kind switch
@@ -61,8 +61,10 @@ public partial class FileLibraryViewModel : FailureScreenViewModel
         }
 
         // The task target, far enough down that the list must be scrolled — and
-        // therefore its containers recycled — before it can be reached.
-        rows[281] = new FileRow("Q3-forecast.xlsx", "Spreadsheet", "412 KB", "2026-07-14");
+        // therefore its containers recycled — before it can be reached. About 18
+        // rows fit the viewport, so reaching row 85 costs roughly four screenfuls
+        // and every container in the pool has been rebound several times over.
+        rows[84] = new FileRow("Q3-forecast.xlsx", "Spreadsheet", "412 KB", "2026-07-14");
 
         return rows;
     }

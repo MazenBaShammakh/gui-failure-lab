@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import SystemShareSheetGallery from '@/components/failures/system-share-sheet-gallery';
 
 interface Props {
   faultActive?: boolean;
@@ -39,6 +40,10 @@ export default function DeadCarouselArrowsScreen({ faultActive: faultActiveProp 
       testID={faultActive ? 'defect:M_DEAD_CAROUSEL_ARROWS' : undefined}
     >
       <Stack.Screen options={{ title: 'Trail Runner — Photos' }} />
+
+      {/* X11 (F-PRC-04): GATED. The share sheet is only mounted once ⇪ is
+          pressed, so the host's carousel task never encounters it. */}
+      <SystemShareSheetGallery />
 
       <View style={styles.gallery}>
         <View style={styles.imageStage}>

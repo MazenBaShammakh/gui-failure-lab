@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import WebViewOpaquePrivacyPanel from '@/components/failures/webview-opaque-privacy-panel';
 
 interface Props {
   faultActive?: boolean;
@@ -60,6 +61,11 @@ export default function UnsupportedLanguageContentScreen({ faultActive: faultAct
           requires reading the content itself. */}
       <Text style={styles.sectionTitle}>Description</Text>
       <Text style={styles.description}>{description}</Text>
+
+      {/* X08 (F-PRC-02): the App Privacy panel is an embedded WebView and the only
+          place the collected-data answer exists. Independent of the host's
+          unsupported-language description above. */}
+      <WebViewOpaquePrivacyPanel />
 
       <Text style={styles.sectionTitle}>Reviews</Text>
       {reviews.map((r, i) => (

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, Pressable, ScrollView } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import A11yHeaderTextMismatch from '@/components/failures/a11y-header-text-mismatch';
 
 interface Props {
   faultActive?: boolean;
@@ -36,8 +37,11 @@ export default function SilentFailedSubmissionScreen({ faultActive: faultActiveP
     >
       <Stack.Screen options={{ title: 'Reapply' }} />
 
-      <Text style={styles.roleTitle}>DevOps Engineer</Text>
-      <Text style={styles.roleMeta}>Nimbus Cloud · Remote</Text>
+      {/* X21 (F-CNT-01): the header block is owned by this fragment. It must
+          replace the plain title/meta rather than sit beside them — a second,
+          correctly-named "DevOps Engineer" node would let a text-only agent
+          ground the role and the mismatch would not bite. */}
+      <A11yHeaderTextMismatch />
 
       {error && (
         <View style={styles.errorBanner} accessibilityLiveRegion="polite">
@@ -82,8 +86,6 @@ export default function SilentFailedSubmissionScreen({ faultActive: faultActiveP
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff' },
   content: { padding: 20, paddingBottom: 48 },
-  roleTitle: { fontSize: 20, fontWeight: '800', color: '#111' },
-  roleMeta: { fontSize: 13, color: '#888', marginTop: 4, marginBottom: 20 },
   errorBanner: {
     backgroundColor: '#fdecea',
     borderRadius: 10,

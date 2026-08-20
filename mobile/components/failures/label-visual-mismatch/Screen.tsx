@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Pressable } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import UnlabelledOverflowLabels from '@/components/failures/unlabelled-overflow-labels';
 
 interface Email {
   id: string;
@@ -47,6 +48,11 @@ export default function LabelVisualMismatchScreen({ faultActive: faultActiveProp
       testID={faultActive ? 'defect:M_LABEL_VISUAL_MISMATCH' : undefined}
     >
       <Stack.Screen options={{ title: 'Inbox' }} />
+
+      {/* X18 (F-NAV-01): labels section header. The host's defect is the per-row
+          archive control's mislabelled accessible name; this task never touches
+          a message row. */}
+      <UnlabelledOverflowLabels />
 
       <FlatList
         data={emails}

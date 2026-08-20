@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import ChatBubbleOverlayCta from '@/components/failures/chat-bubble-overlay-cta';
 
 interface Props {
   faultActive?: boolean;
@@ -14,6 +15,9 @@ export default function DeadStepperScreen({ faultActive: faultActiveProp }: Prop
   const faultActive = faultActiveProp ?? faultActiveCtx;
 
   const [qty, setQty] = useState(1);
+  // X34 (F-INS-02): the host's Add-to-cart was a no-op stub; give it real state
+  // so baseline can succeed and the overlay's interception is observable.
+  const [added, setAdded] = useState(false);
 
   // Faulty: the + / − buttons render and look interactive, but their handlers
   // are no-ops, so the quantity never changes. Baseline: they increment/decrement.
@@ -79,14 +83,26 @@ export default function DeadStepperScreen({ faultActive: faultActiveProp }: Prop
         <Text style={styles.totalValue}>${(UNIT_PRICE * qty).toFixed(2)}</Text>
       </View>
 
-      <Pressable
-        style={({ pressed }) => [styles.cartBtn, pressed && styles.cartBtnPressed]}
-        accessibilityRole="button"
-        accessibilityLabel="Add to cart"
-        onPress={() => {}}
-      >
-        <Text style={styles.cartBtnText}>Add {qty} to Cart</Text>
-      </Pressable>
+      {added && (
+        <Text style={styles.addedNote} accessibilityLiveRegion="polite">
+          ✓ Added {qty} to your cart
+        </Text>
+      )}
+
+      {/* X34 (F-INS-02): the CTA wrapper bounds the chat widget's oversized
+          transparent hit area to the button. The host's defect is the dead
+          stepper above, which this task never uses. */}
+      <View style={styles.ctaWrapper}>
+        <Pressable
+          style={({ pressed }) => [styles.cartBtn, pressed && styles.cartBtnPressed]}
+          accessibilityRole="button"
+          accessibilityLabel="Add to cart"
+          onPress={() => setAdded(true)}
+        >
+          <Text style={styles.cartBtnText}>Add {qty} to Cart</Text>
+        </Pressable>
+        <ChatBubbleOverlayCta />
+      </View>
     </View>
   );
 }
@@ -140,12 +156,14 @@ const styles = StyleSheet.create({
   totalLabel: { fontSize: 15, color: '#555' },
   totalValue: { fontSize: 18, fontWeight: '700', color: '#111' },
 
+  addedNote: { fontSize: 14, color: '#2e7d32', fontWeight: '700', marginTop: 8 },
+  // Relative bound for the X34 overlay so its capture layer maps to the CTA.
+  ctaWrapper: { position: 'relative', marginTop: 12 },
   cartBtn: {
     backgroundColor: '#111',
     borderRadius: 12,
     paddingVertical: 16,
     alignItems: 'center',
-    marginTop: 12,
   },
   cartBtnPressed: { opacity: 0.8 },
   cartBtnText: { color: '#fff', fontSize: 16, fontWeight: '700' },

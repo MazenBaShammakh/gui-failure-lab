@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import StaticStyledCompanyLink from '@/components/failures/static-styled-company-link';
 
 interface Props {
   faultActive?: boolean;
@@ -33,7 +34,10 @@ export default function ClickNoVisibleEffectScreen({ faultActive: faultActivePro
           </View>
           <View style={styles.headerInfo}>
             <Text style={styles.jobTitle}>Senior Frontend Engineer</Text>
-            <Text style={styles.company}>Acme Corp</Text>
+            {/* X01 (F-IDT-02): the company byline is a real link disguised as
+                metadata. It replaces the static Text so there is no second,
+                plainly-static "Acme Corp" node to compare against. */}
+            <StaticStyledCompanyLink />
           </View>
           <Pressable
             onPress={handleSave}
@@ -103,7 +107,6 @@ const styles = StyleSheet.create({
   logoText: { color: '#fff', fontWeight: '700', fontSize: 16 },
   headerInfo: { flex: 1 },
   jobTitle: { fontSize: 17, fontWeight: '700', color: '#111' },
-  company: { fontSize: 14, color: '#555', marginTop: 2 },
   saveBtn: { padding: 4 },
   heartIcon: { fontSize: 26, color: '#bbb' },
   heartSaved: { color: '#e91e63' },

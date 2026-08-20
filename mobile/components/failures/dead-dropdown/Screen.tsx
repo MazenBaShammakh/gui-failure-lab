@@ -1,7 +1,10 @@
 import { useState } from 'react';
-import { View, Text, StyleSheet, Pressable, Modal } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Modal, ScrollView } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import StickyBarOccludesRow, {
+  STICKY_BAR_HEIGHT,
+} from '@/components/failures/sticky-bar-occludes-row';
 
 interface Props {
   faultActive?: boolean;
@@ -14,6 +17,9 @@ interface Job {
   location: string;
 }
 
+// X35 (F-INS-03): the list is long enough that the last role is well below the
+// fold, so the sticky bottom bar's occlusion of it is not confusable with the
+// row simply being off-screen.
 const ALL_JOBS: Job[] = [
   { id: '1', title: 'Senior Frontend Engineer', company: 'Acme Corp', location: 'Remote' },
   { id: '2', title: 'Product Designer', company: 'Figma', location: 'San Francisco, CA' },
@@ -21,6 +27,12 @@ const ALL_JOBS: Job[] = [
   { id: '4', title: 'iOS Developer', company: 'Spotify', location: 'Stockholm, Sweden' },
   { id: '5', title: 'Backend Engineer', company: 'Shopify', location: 'Ottawa, Canada' },
   { id: '6', title: 'ML Engineer', company: 'DeepMind', location: 'London, UK' },
+  { id: '7', title: 'Platform Engineer', company: 'Cloudflare', location: 'Remote' },
+  { id: '8', title: 'Security Engineer', company: 'Datadog', location: 'New York, NY' },
+  { id: '9', title: 'Android Developer', company: 'Revolut', location: 'Berlin, Germany' },
+  { id: '10', title: 'Site Reliability Engineer', company: 'GitLab', location: 'Remote' },
+  { id: '11', title: 'Design Systems Lead', company: 'Linear', location: 'Amsterdam, NL' },
+  { id: '12', title: 'Staff Engineer', company: 'Vercel', location: 'Remote' },
 ];
 
 const LOCATIONS = ['All locations', 'Remote', 'San Francisco, CA', 'Stockholm, Sweden', 'Ottawa, Canada', 'London, UK'];
@@ -31,6 +43,7 @@ export default function DeadDropdownScreen({ faultActive: faultActiveProp }: Pro
 
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState('All locations');
+  const [openedJob, setOpenedJob] = useState<Job | null>(null);
 
   const filtered =
     selected === 'All locations'
@@ -64,15 +77,39 @@ export default function DeadDropdownScreen({ faultActive: faultActiveProp }: Pro
 
       <Text style={styles.resultsCount}>{filtered.length} jobs</Text>
 
-      <View style={styles.list}>
+      {openedJob && (
+        <Text style={styles.openedNote} accessibilityLiveRegion="polite">
+          Opened: {openedJob.title} at {openedJob.company}
+        </Text>
+      )}
+
+      {/* X35 (F-INS-03): the results scroll, but the content pads clear of the
+          sticky bar only in baseline. In faulty there is no bottom padding, so
+          the last role stays behind the bar. */}
+      <ScrollView
+        style={styles.scroll}
+        contentContainerStyle={[
+          styles.list,
+          { paddingBottom: faultActive ? 8 : STICKY_BAR_HEIGHT + 16 },
+        ]}
+        showsVerticalScrollIndicator={!faultActive}
+      >
         {filtered.map((job) => (
-          <View key={job.id} style={styles.jobCard}>
+          <Pressable
+            key={job.id}
+            style={styles.jobCard}
+            onPress={() => setOpenedJob(job)}
+            accessibilityRole="button"
+            accessibilityLabel={`Open ${job.title} at ${job.company}`}
+          >
             <Text style={styles.jobTitle}>{job.title}</Text>
             <Text style={styles.jobCompany}>{job.company}</Text>
             <Text style={styles.jobLocation}>📍 {job.location}</Text>
-          </View>
+          </Pressable>
         ))}
-      </View>
+      </ScrollView>
+
+      <StickyBarOccludesRow />
 
       <Modal
         visible={open}
@@ -125,7 +162,9 @@ const styles = StyleSheet.create({
   selectText: { fontSize: 15, color: '#111' },
   chevron: { fontSize: 14, color: '#888' },
   resultsCount: { fontSize: 13, color: '#888', marginTop: 8 },
-  list: { gap: 12, marginTop: 4 },
+  openedNote: { fontSize: 13, color: '#2e7d32', fontWeight: '700' },
+  scroll: { flex: 1, marginTop: 4 },
+  list: { gap: 12 },
   jobCard: { backgroundColor: '#fff', borderRadius: 12, padding: 16, gap: 4 },
   jobTitle: { fontSize: 15, fontWeight: '700', color: '#111' },
   jobCompany: { fontSize: 13, color: '#555' },

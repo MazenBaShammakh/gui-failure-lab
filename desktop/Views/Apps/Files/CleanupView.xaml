@@ -1,0 +1,66 @@
+<UserControl x:Class="desktop.Views.Apps.Files.CleanupView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             AutomationProperties.AutomationId="{Binding DefectMarker}">
+
+    <Grid Background="{StaticResource Canvas}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel MaxWidth="720" Margin="40,32,40,48">
+
+                <Button Content="← Files" Style="{StaticResource SubtleButton}"
+                        HorizontalAlignment="Left" Margin="-8,0,0,16"
+                        Command="{Binding GoBackCommand}"/>
+
+                <TextBlock Text="Cleanup" Style="{StaticResource Title}" Margin="0,0,0,4"/>
+                <TextBlock Style="{StaticResource Subtitle}" Margin="0,0,0,20"
+                           Text="Files untouched for more than 90 days. Archive keeps a copy; delete is permanent."/>
+
+                <Border Style="{StaticResource Card}" Padding="0">
+                    <ItemsControl ItemsSource="{Binding Files}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1" Padding="18,14">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+
+                                        <StackPanel VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Name}" FontSize="14" FontWeight="Medium"
+                                                       Foreground="{StaticResource Ink}"/>
+                                            <TextBlock FontSize="12" Foreground="{StaticResource InkMuted}" Margin="0,2,0,0">
+                                                <Run Text="{Binding Kind, Mode=OneWay}"/><Run Text="  ·  "/><Run Text="{Binding Size, Mode=OneWay}"/><Run Text="  ·  last modified "/><Run Text="{Binding Modified, Mode=OneWay}"/>
+                                            </TextBlock>
+                                        </StackPanel>
+
+                                        <!--
+                                            The captions below are literals and are identical in both
+                                            variants. The AutomationProperties.Name values are bound to
+                                            the view model, which exchanges them when the fault is armed.
+                                        -->
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                                            <Button Content="Archive"
+                                                    AutomationProperties.Name="{Binding DataContext.ArchiveAutomationName, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    Command="{Binding DataContext.ArchiveCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding}"
+                                                    Margin="0,0,8,0"/>
+                                            <Button Content="Delete"
+                                                    AutomationProperties.Name="{Binding DataContext.DeleteAutomationName, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding}"/>
+                                        </StackPanel>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </Border>
+
+                <TextBlock Text="{Binding StatusMessage}" Margin="2,16,0,0"
+                           FontSize="13" Foreground="{StaticResource Positive}"/>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

@@ -1,0 +1,21 @@
+<Window x:Class="desktop.Views.Apps.Notes.PreferencesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:desktop.Views.Apps.Notes"
+        Title=""
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="#66000000"
+        ShowInTaskbar="False"
+        Topmost="True"
+        ResizeMode="NoResize"
+        WindowStartupLocation="Manual">
+
+    <!--
+        Borderless, transparent and stretched over the main window, so what a
+        screenshot shows is indistinguishable from the baseline's in-window overlay.
+        Structurally it is a different HWND and a different top-level element under
+        the desktop root — which is the entire defect.
+    -->
+    <local:PreferencesCard/>
+</Window>

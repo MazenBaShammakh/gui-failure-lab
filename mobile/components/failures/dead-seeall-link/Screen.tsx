@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import SwappedSectionHeadings from '@/components/failures/swapped-section-headings';
 
 interface Props {
   faultActive?: boolean;
@@ -122,6 +123,11 @@ export default function DeadSeeAllLinkScreen({ faultActive: faultActiveProp }: P
           </View>
         );
       })}
+
+      {/* X20 (F-CNT-01): two further rails whose headings are swapped with each
+          other. They carry no "See all" control, so the host's dead-link defect
+          is not on this task's path. */}
+      <SwappedSectionHeadings />
     </ScrollView>
   );
 }

@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import HorizontalLazyRail from '@/components/failures/horizontal-lazy-rail';
 
 interface Props {
   faultActive?: boolean;
@@ -134,6 +135,11 @@ export default function LongPressNoCueMusicScreen({ faultActive: faultActiveProp
           <Text style={styles.playlistSub}>{TRACKS.length} songs · 27 min</Text>
         </View>
       </View>
+
+      {/* X28 (F-TMP-01): horizontal playlists rail. The host's defect is the
+          long-press-only add on the track rows below; this task opens a playlist
+          from the rail and never touches a track. */}
+      <HorizontalLazyRail />
 
       {status && (
         <View style={styles.statusBar} accessibilityLiveRegion="polite">

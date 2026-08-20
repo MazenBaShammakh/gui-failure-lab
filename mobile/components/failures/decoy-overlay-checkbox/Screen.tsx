@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import DeuteranopiaPriorityFlags from '@/components/failures/deuteranopia-priority-flags';
 
 interface Props {
   faultActive?: boolean;
@@ -37,6 +38,11 @@ export default function DecoyOverlayCheckboxScreen({ faultActive: faultActivePro
       testID={faultActive ? 'defect:M_DECOY_OVERLAY_CHECKBOX' : undefined}
     >
       <Stack.Screen options={{ title: 'Today' }} />
+
+      {/* X07 (F-IDT-05): its own flagged-items block, above the checklist. The
+          host's decoy overlay sits on the "Call dentist" checkbox further down
+          and is never touched by this task. */}
+      <DeuteranopiaPriorityFlags />
 
       <Text style={styles.heading}>Checklist</Text>
 

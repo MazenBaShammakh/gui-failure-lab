@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import RecycledGridCellNames from '@/components/failures/recycled-grid-cell-names';
 
 interface Photo {
   id: string;
@@ -100,6 +101,11 @@ export default function PullToRefreshOnlyScreen({ faultActive: faultActiveProp }
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#555" />
         }
+        // X16 (F-STR-01): a separate "All photos" grid appended as the footer.
+        // It deliberately does NOT recycle the Recents grid above — that grid
+        // carries this screen's own defect, and stale names there would also
+        // break the host task, which grounds on "Sunset at the pier".
+        ListFooterComponent={<RecycledGridCellNames />}
         renderItem={({ item }) => (
           <Pressable
             style={[styles.tile, { backgroundColor: item.tint }]}

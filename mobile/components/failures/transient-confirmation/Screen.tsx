@@ -2,6 +2,7 @@ import { useState, useRef, useCallback, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, Pressable, ScrollView } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import DisabledStyledSortcode from '@/components/failures/disabled-styled-sortcode';
 
 interface Props {
   faultActive?: boolean;
@@ -73,6 +74,11 @@ export default function TransientConfirmationScreen({ faultActive: faultActivePr
       testID={faultActive ? 'defect:M_TRANSIENT_CONFIRMATION' : undefined}
     >
       <Stack.Screen options={{ title: 'Add payee' }} />
+
+      {/* X02 (F-IDT-02): a working control painted and announced as a locked
+          read-only value. Sits above the form; the host's transient-confirmation
+          defect only appears after "Add payee" is pressed. */}
+      <DisabledStyledSortcode />
 
       <Text style={styles.label}>Payee name</Text>
       <TextInput

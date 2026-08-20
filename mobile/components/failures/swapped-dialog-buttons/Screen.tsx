@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView, Modal } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import WebViewOpaqueGiftcard from '@/components/failures/webview-opaque-giftcard';
 
 interface Props {
   faultActive?: boolean;
@@ -68,6 +69,11 @@ export default function SwappedDialogButtonsScreen({ faultActive: faultActivePro
           <Text style={styles.addrLine}>Arcisstraße 21</Text>
           <Text style={styles.addrLine}>80333 München, Germany</Text>
         </View>
+
+        {/* X09 (F-PRC-02): third-party gift-card widget in an embedded WebView.
+            The host's defect is in the Place Order confirmation dialog, which
+            this task never opens. */}
+        <WebViewOpaqueGiftcard />
 
         <View style={styles.totals}>
           <View style={styles.totalRow}>

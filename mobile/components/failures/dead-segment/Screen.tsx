@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, Pressable } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import InaccessibleSelectAll from '@/components/failures/inaccessible-select-all';
 
 interface Email {
   id: string;
@@ -46,6 +47,9 @@ export default function DeadSegmentScreen({ faultActive: faultActiveProp }: Prop
   const faultActiveCtx = useFaultMode();
   const faultActive = faultActiveProp ?? faultActiveCtx;
   const [active, setActive] = useState<Segment>('primary');
+  // X13 (F-PRC-05): selection state is owned here because the visible result of
+  // "select all" is on the rows below, not on the control itself.
+  const [allSelected, setAllSelected] = useState(false);
 
   const handlePress = (key: Segment) => {
     // Baseline: switching works and shows that segment's emails.
@@ -82,12 +86,27 @@ export default function DeadSegmentScreen({ faultActive: faultActiveProp }: Prop
         })}
       </View>
 
+      {/* X13 (F-PRC-05): the select-all control. Sits below the host's segment
+          bar, which is the host's own defect and is never used by this task. */}
+      <InaccessibleSelectAll
+        count={EMAILS[active].length}
+        selected={allSelected}
+        onToggle={setAllSelected}
+      />
+
       <FlatList
         data={EMAILS[active]}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.emailRow}>
-            <View style={[styles.unreadDot, !item.unread && styles.unreadDotHidden]} />
+          <View style={[styles.emailRow, allSelected && styles.emailRowSelected]}>
+            {/* X13: the visible outcome of selecting all lives on the rows. */}
+            {allSelected ? (
+              <View style={styles.rowCheck}>
+                <Text style={styles.rowCheckMark}>✓</Text>
+              </View>
+            ) : (
+              <View style={[styles.unreadDot, !item.unread && styles.unreadDotHidden]} />
+            )}
             <View style={styles.emailContent}>
               <View style={styles.emailTopRow}>
                 <Text
@@ -159,6 +178,19 @@ const styles = StyleSheet.create({
     flexShrink: 0,
   },
   unreadDotHidden: { backgroundColor: 'transparent' },
+  // X13: selected-row treatment.
+  emailRowSelected: { backgroundColor: '#e8f0fe' },
+  rowCheck: {
+    width: 18,
+    height: 18,
+    borderRadius: 9,
+    backgroundColor: '#1565c0',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexShrink: 0,
+    marginLeft: -5,
+  },
+  rowCheckMark: { color: '#fff', fontSize: 11, fontWeight: '900' },
   emailContent: { flex: 1, gap: 3 },
   emailTopRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   emailFrom: { fontSize: 14, color: '#666', flex: 1 },

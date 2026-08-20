@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, FlatList, Pressable, Modal } from 'react-native
 import { Link, Stack } from 'expo-router';
 import type { Href } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import StaleNamesAfterFilter from '@/components/failures/stale-names-after-filter';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   useSharedValue,
@@ -166,6 +167,10 @@ export default function SwipeCategorizeScreen({ faultActive: faultActiveProp }: 
         )}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
         style={styles.list}
+        // X17 (F-STR-01): a separate Statement section appended as the footer.
+        // It deliberately does NOT recycle the Recent activity list above, which
+        // already carries this screen's own region-scoped defect.
+        ListFooterComponent={<StaleNamesAfterFilter />}
       />
 
       <Modal visible={picker !== null} transparent animationType="slide">

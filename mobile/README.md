@@ -1,57 +1,62 @@
-# Welcome to your Expo app 👋
+# gui-failure-lab — mobile
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+The Expo / React Native app in the `gui-failure-lab` suite: a single
+simulated phone with 13 in-app "apps" (Shop, Mail, Music, Banking, ...), each
+screen switchable between a correct **baseline** and a defective **faulty**
+rendering, for testing how AI agents behave against a broken UI.
 
-## Get started
-
-1. Install dependencies
-
-    ```bash
-    npm install
-    ```
-
-2. Start the app
-
-    ```bash
-    npx expo start
-    ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Part of the `gui-failure-lab` repo — see [the root README](../README.md) for
+how this fits alongside the web and desktop apps.
 
 ---
 
-npx expo prebuild
-cd android
-.\gradlew assembleRelease
-.\gradlew installRelease
+## Stack
+
+Expo SDK 54, Expo Router 6 (file-based routing), React Native 0.81, React 19,
+TypeScript. No backend — mock/local data only.
+
+---
+
+## Getting started
+
+```bash
+npm install
+npm run start
+```
+
+This runs `expo start`; follow the CLI output to open the app in Expo Go, an
+Android emulator, or an iOS simulator. Every task starts on the Home
+springboard, listing all 13 simulated apps plus a Settings screen.
+
+Other scripts (from `package.json`):
+
+- `npm run android` / `npm run ios` — open directly in a connected emulator/device
+- `npm run web` — run the same app in a browser via `react-native-web`
+- `npm run lint`
+
+---
+
+## Switching baseline / faulty
+
+Unlike the web app, the mode is a **live, in-app toggle**, not an environment
+variable — flip it from the Settings screen (gear icon on the Home
+springboard). This is deliberate: an agent navigates the app like a real
+user and never has to know the mode exists.
+
+The mode persists across screens for the session (`AsyncStorage` on native,
+`localStorage` when running via `npm run web`). A harness can also drive the
+toggle through the UI directly, or pre-seed `localStorage['gui-lab:mode']`
+when targeting the web build.
+
+When the faulty condition is active on a given screen, that screen sets a
+`testID="defect:<CODE>"` on its defective element — the mobile equivalent of
+web's hidden HTML marker — so a harness can confirm which defect was
+exercised.
+
+---
+
+## Task list
+
+`tasks.yaml` in this directory is the contract with the external agent
+harness: one entry per implemented failure, naming the task instruction, the
+target simulated app, the start/target screen, and the expected defect code.

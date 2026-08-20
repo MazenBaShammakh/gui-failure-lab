@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import LateStockFetch from '@/components/failures/late-stock-fetch';
 
 interface Props {
   faultActive?: boolean;
@@ -33,6 +34,11 @@ export default function NonClickableNormalCtaScreen({ faultActive: faultActivePr
         </View>
 
         <Text style={styles.price}>$149.99</Text>
+
+        {/* X30 (F-TMP-02): availability resolves via a late secondary fetch. A
+            read-out block; the host's defect is the non-clickable Add to Cart
+            below, which this task never taps. */}
+        <LateStockFetch />
 
         <Text style={styles.description}>
           Lightweight running shoes with responsive cushioning. Engineered mesh upper for breathability. Sizes 7–13.

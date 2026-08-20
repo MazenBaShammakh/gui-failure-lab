@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import CollapsedUnmountedSection from '@/components/failures/collapsed-unmounted-section';
 
 interface Props {
   faultActive?: boolean;
@@ -75,6 +76,11 @@ export default function RenameSettingsAppsScreen({ faultActive: faultActiveProp 
             Opened settings for {apps.find((a) => a.id === openedId)?.name}.
           </Text>
         )}
+
+        {/* X29 (F-TMP-01): a collapsed section whose rows are unmounted until
+            expanded. Its apps are system apps that exist only here, so the
+            host's Chirp -> Zap rebrand is never on this task's path. */}
+        <CollapsedUnmountedSection />
       </ScrollView>
     </View>
   );

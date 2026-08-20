@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, FlatList, Pressable, ScrollView } from 'react-native';
 import { Stack, useRouter } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import PageScopedSort from '@/components/failures/page-scoped-sort';
 
 interface Item {
   id: string;
@@ -134,6 +135,11 @@ export default function GhostElementsCarouselScreen({ faultActive: faultActivePr
           onOpen={handleOpen}
         />
       ))}
+
+      {/* X25 (F-CNT-03): a paged vertical grid with a page-scoped price sort. It
+          has no carousel and no ghost cards, so the host's defect is not on this
+          task's path. */}
+      <PageScopedSort />
     </ScrollView>
   );
 }

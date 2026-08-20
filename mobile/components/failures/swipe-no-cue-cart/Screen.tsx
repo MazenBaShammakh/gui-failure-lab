@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import CheckoutReservationPopup from '@/components/failures/checkout-reservation-popup';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   useSharedValue,
@@ -124,6 +125,10 @@ export default function SwipeNoCueCartScreen({ faultActive: faultActiveProp }: P
   const faultActiveCtx = useFaultMode();
   const faultActive = faultActiveProp ?? faultActiveCtx;
   const [items, setItems] = useState<CartItem[]>(INITIAL_ITEMS);
+  // X31 (F-TMP-03): "entering checkout" gate. The popup lives in the checkout
+  // sub-step, which only exists once this is true, so the swipe-to-remove task
+  // (which never checks out) never arms it.
+  const [checkingOut, setCheckingOut] = useState(false);
 
   const handleRemove = useCallback((id: string) => {
     setItems((prev) => prev.filter((i) => i.id !== id));
@@ -163,12 +168,16 @@ export default function SwipeNoCueCartScreen({ faultActive: faultActiveProp }: P
         </View>
         <Pressable
           style={({ pressed }) => [styles.checkoutBtn, pressed && styles.checkoutBtnPressed]}
+          onPress={() => setCheckingOut(true)}
           accessibilityRole="button"
           accessibilityLabel="Proceed to checkout"
         >
           <Text style={styles.checkoutText}>Checkout</Text>
         </Pressable>
       </View>
+
+      {/* X31 (F-TMP-03): the checkout sub-step + reservation popup. */}
+      <CheckoutReservationPopup visible={checkingOut} onClose={() => setCheckingOut(false)} />
     </View>
   );
 }

@@ -40,6 +40,15 @@
         <DataTemplate DataType="{x:Type vmFiles:SyncViewModel}">
             <vFiles:SyncView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vmFiles:CleanupViewModel}">
+            <vFiles:CleanupView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vmFiles:MoveViewModel}">
+            <vFiles:MoveView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vmFiles:VersionsViewModel}">
+            <vFiles:VersionsView/>
+        </DataTemplate>
 
         <!-- Notes -->
         <DataTemplate DataType="{x:Type vmNotes:NoteEditorViewModel}">
@@ -48,10 +57,19 @@
         <DataTemplate DataType="{x:Type vmNotes:FormatToolbarViewModel}">
             <vNotes:FormatToolbarView/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type vmNotes:PreferencesViewModel}">
+            <vNotes:PreferencesView/>
+        </DataTemplate>
 
         <!-- Store -->
         <DataTemplate DataType="{x:Type vmStore:CheckoutViewModel}">
             <vStore:CheckoutView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vmStore:ShippingViewModel}">
+            <vStore:ShippingView/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vmStore:RefundViewModel}">
+            <vStore:RefundView/>
         </DataTemplate>
 
     </Window.Resources>

@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { View, Text, StyleSheet, Pressable, FlatList } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import UnboundedFeedTail from '@/components/failures/unbounded-feed-tail';
 
 interface Props {
   faultActive?: boolean;
@@ -91,6 +92,9 @@ export default function GhostElementsFeedScreen({ faultActive: faultActiveProp }
   const faultActiveCtx = useFaultMode();
   const faultActive = faultActiveProp ?? faultActiveCtx;
   const [likes, setLikes] = useState<Record<string, boolean>>({});
+  // X26 (F-FBK-01): the host list's onEndReached drives the unbounded tail, so
+  // auto-load rides the real scroll rather than a nested scrollable or a button.
+  const [loadedTail, setLoadedTail] = useState(0);
 
   const toggleLike = useCallback((id: string) => {
     setLikes((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -116,6 +120,12 @@ export default function GhostElementsFeedScreen({ faultActive: faultActiveProp }
         windowSize={faultActive ? 41 : 3}
         initialNumToRender={faultActive ? FEED.length : 4}
         maxToRenderPerBatch={faultActive ? FEED.length : 4}
+        // X26 (F-FBK-01): grow the tail as the end is approached. The tail is
+        // rendered in the footer (below), NOT appended to `data`, so it never
+        // feeds this screen's virtualization-defeating ghost defect.
+        onEndReached={() => setLoadedTail((n) => n + 1)}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={<UnboundedFeedTail loadedTail={loadedTail} />}
       />
 
       {/* Faulty extra: a hard off-screen Like widget for a post the user can never

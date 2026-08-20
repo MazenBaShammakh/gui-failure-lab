@@ -8,6 +8,7 @@ public sealed class NotesHubViewModel : AppHubViewModel
     [
         new HubEntry("Editor", "/notes/editor", "Write and export the current note"),
         new HubEntry("Formatting", "/notes/format", "Paragraph and list formatting tools"),
+        new HubEntry("Settings", "/notes/preferences", "Editor preferences, autosave and backup"),
     ])
     { }
 }

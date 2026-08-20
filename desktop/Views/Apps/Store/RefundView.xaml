@@ -1,0 +1,87 @@
+<UserControl x:Class="desktop.Views.Apps.Store.RefundView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             AutomationProperties.AutomationId="{Binding DefectMarker}">
+
+    <!--
+        IsEnabled is the remediation, and it is bound rather than hard-coded: the
+        baseline drops it to false for the lifetime of the modal so UI Automation
+        reports what the Win32 input block already knows, while the faulty variant
+        leaves it true and lets the tree advertise a control the user cannot reach.
+    -->
+    <Grid Background="{StaticResource Canvas}" IsEnabled="{Binding ContentEnabled}">
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel MaxWidth="540" Margin="40,32,40,48">
+
+                <Button Content="← Store" Style="{StaticResource SubtleButton}"
+                        HorizontalAlignment="Left" Margin="-8,0,0,16"
+                        Command="{Binding GoBackCommand}"/>
+
+                <Border Style="{StaticResource Card}" Padding="28">
+                    <StackPanel>
+                        <TextBlock FontSize="19" FontWeight="SemiBold" Foreground="{StaticResource Ink}"
+                                   Margin="0,0,0,20">
+                            <Run Text="Refund order "/><Run Text="{Binding OrderId, Mode=OneWay}"/>
+                        </TextBlock>
+
+                        <Grid Margin="0,0,0,16">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
+                                <TextBlock Text="Wireless Headphones Pro" FontSize="14"
+                                           FontWeight="Medium" Foreground="{StaticResource Ink}"/>
+                                <TextBlock FontSize="12" Foreground="{StaticResource InkMuted}" Margin="0,2,0,0">
+                                    <Run Text="Delivered 4 July  ·  paid with "/><Run Text="{Binding CardOnFile, Mode=OneWay}"/>
+                                </TextBlock>
+                            </StackPanel>
+                            <TextBlock Grid.Column="1" Text="$149.99" FontSize="14"
+                                       FontWeight="SemiBold" Foreground="{StaticResource Ink}"
+                                       VerticalAlignment="Center"/>
+                        </Grid>
+
+                        <Border Height="1" Background="{StaticResource Line}" Margin="0,0,0,20"/>
+
+                        <TextBlock Style="{StaticResource Body}" Foreground="{StaticResource InkMuted}"
+                                   Margin="0,0,0,20"
+                                   Text="Refunds are returned to the original payment method and cannot be reversed once requested."/>
+
+                        <!--
+                            Gated by PRESENCE, not by IsEnabled. Dismissing the dialog
+                            without verifying removes this control and leaves the prompt
+                            below, so no ordinary input path reaches an unverified refund
+                            in either condition. While the modal is up the control is
+                            present and invocable — which is precisely the interval the
+                            defect exploits — and an IsEnabled gate here would make UI
+                            Automation report it disabled and suppress the bypass.
+                        -->
+                        <Button Content="Request refund"
+                                AutomationProperties.Name="Request refund"
+                                Style="{StaticResource PrimaryButton}"
+                                Command="{Binding RequestRefundCommand}"
+                                Visibility="{Binding ShowRefundAction, Converter={StaticResource BoolToVis}}"
+                                Height="44" FontSize="15" Margin="0,0,0,12"/>
+
+                        <StackPanel Visibility="{Binding ShowVerifyPrompt, Converter={StaticResource BoolToVis}}"
+                                    Margin="0,0,0,12">
+                            <TextBlock Style="{StaticResource Body}" Foreground="{StaticResource InkMuted}"
+                                       TextAlignment="Center" Margin="0,0,0,12"
+                                       Text="Verify your identity to request a refund for this order."/>
+                            <Button Content="Verify identity"
+                                    AutomationProperties.Name="Verify identity"
+                                    Style="{StaticResource PrimaryButton}"
+                                    Command="{Binding VerifyIdentityCommand}"
+                                    Height="44" FontSize="15"/>
+                        </StackPanel>
+
+                        <TextBlock Text="{Binding StatusMessage}" HorizontalAlignment="Center"
+                                   TextWrapping="Wrap" TextAlignment="Center"
+                                   Foreground="{StaticResource Positive}" FontSize="13"/>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

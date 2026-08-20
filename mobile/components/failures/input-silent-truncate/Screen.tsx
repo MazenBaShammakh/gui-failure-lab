@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import ColorInversionCalendarPicker from '@/components/failures/color-inversion-calendar-picker';
 
 interface CalEvent {
   id: string;
@@ -76,6 +77,11 @@ export default function InputSilentTruncateScreen({ faultActive: faultActiveProp
       <View style={styles.staticField}>
         <Text style={styles.staticFieldText}>Today · 10:00 AM</Text>
       </View>
+
+      {/* X06 (F-IDT-05): calendar colour picker. Sits between "When" and Save;
+          the host's defect silently truncates the Title input above, which this
+          task never types into. */}
+      <ColorInversionCalendarPicker />
 
       <Pressable
         style={styles.saveButton}

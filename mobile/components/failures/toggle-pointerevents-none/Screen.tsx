@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, Switch, ScrollView } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import LowContrastSelectedState from '@/components/failures/low-contrast-selected-state';
 
 interface Props {
   faultActive?: boolean;
@@ -42,6 +43,10 @@ export default function TogglePointerEventsNoneScreen({ faultActive: faultActive
             </View>
           </View>
         </View>
+
+        {/* X15 (F-PRC-06): reading-theme preview cards. The host's defect is the
+            Dark Mode toggle in the card above; this task only reads state. */}
+        <LowContrastSelectedState />
 
         <Text style={styles.sectionLabel}>GENERAL</Text>
         <View style={styles.card}>

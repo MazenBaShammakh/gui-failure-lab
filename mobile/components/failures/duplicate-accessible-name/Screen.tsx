@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import OverloadedIconAlbumMore from '@/components/failures/overloaded-icon-album-more';
 
 interface Props {
   faultActive?: boolean;
@@ -46,6 +47,10 @@ export default function DuplicateAccessibleNameScreen({ faultActive: faultActive
         <Text style={styles.albumTitle}>Night Sessions</Text>
         <Text style={styles.albumSub}>Various Artists · 2024</Text>
       </View>
+
+      {/* X03 (F-IDT-03): album-level action bar. The host's defect is on the track
+          rows below, which this task never touches. */}
+      <OverloadedIconAlbumMore />
 
       {nowPlaying && (
         <View style={styles.statusBar} accessibilityLiveRegion="polite">

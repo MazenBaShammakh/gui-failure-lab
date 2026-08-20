@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import RebrandCollisionNotifications from '@/components/failures/rebrand-collision-notifications';
 
 interface Props {
   faultActive?: boolean;
@@ -68,6 +69,11 @@ export default function DeadCheckboxScreen({ faultActive: faultActiveProp }: Pro
             );
           })}
         </View>
+
+        {/* X05 (F-IDT-04): per-app rows in their own section below. The host's
+            defect is the inert "Push notifications" checkbox in the card above,
+            which this task never touches. */}
+        <RebrandCollisionNotifications />
       </ScrollView>
     </View>
   );

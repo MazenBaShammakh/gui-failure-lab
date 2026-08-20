@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import VagueAccordionTriplet from '@/components/failures/vague-accordion-triplet';
 
 interface Props {
   faultActive?: boolean;
@@ -48,6 +49,11 @@ export default function NonclickableApplyScreen({ faultActive: faultActiveProp }
           interfaces, run user research, and partner with engineering to ship
           features used by millions of designers worldwide.
         </Text>
+
+        {/* X19 (F-NAV-01): three identically-titled accordions below the
+            description. The host's defect is the non-clickable "Apply now"
+            button further down, which this task never presses. */}
+        <VagueAccordionTriplet />
 
         {applied && (
           <Text style={styles.confirmation} accessibilityLiveRegion="polite">

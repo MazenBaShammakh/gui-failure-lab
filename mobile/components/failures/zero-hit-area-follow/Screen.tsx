@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import ActionHiddenAmongSiblings from '@/components/failures/action-hidden-among-siblings';
 
 interface Props {
   faultActive?: boolean;
@@ -43,6 +44,10 @@ export default function ZeroHitAreaFollowScreen({ faultActive: faultActiveProp }
             <Text style={styles.statLabel}>Following</Text>
           </View>
         </View>
+
+        {/* X10 (F-PRC-03): profile action row. The host's defect is the 0x0 hit
+            area on the Follow button below, which this task never presses. */}
+        <ActionHiddenAmongSiblings />
 
         {/*
           Baseline: a normal full-width, tappable Follow button.

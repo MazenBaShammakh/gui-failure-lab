@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, FlatList } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import RepeatedGlyphPhotoActions from '@/components/failures/repeated-glyph-photo-actions';
 
 interface Props {
   faultActive?: boolean;
@@ -97,6 +98,11 @@ export default function MissingSortControlsScreen({ faultActive: faultActiveProp
       testID={faultActive ? 'defect:M_MISSING_SORT_CONTROLS' : undefined}
     >
       <Stack.Screen options={{ title: 'All Photos' }} />
+
+      {/* X04 (F-IDT-03): album-level action row. Sits above the grid — the host's
+          defect (no sort control, scrambled order) is in the grid below and is
+          never read by this task. */}
+      <RepeatedGlyphPhotoActions />
 
       {opened && (
         <View style={styles.banner} accessibilityLiveRegion="polite">

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Stack } from 'expo-router';
 import { useFaultMode } from '@/lib/fault-mode';
+import UnboundedAlertHistory from '@/components/failures/unbounded-alert-history';
 
 interface Props {
   faultActive?: boolean;
@@ -74,6 +75,11 @@ export default function NonblockingOverlayOcclusionScreen({ faultActive: faultAc
           </View>
         </View>
       ))}
+
+      {/* X27 (F-FBK-01): its own alert-history list below the alert rows. The
+          host's defect is the overlay occluding Refresh in the header, which
+          this task never uses. */}
+      <UnboundedAlertHistory />
     </View>
   );
 }
