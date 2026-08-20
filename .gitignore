@@ -1,8 +1,18 @@
 taxonomy/
-# specs/
+specs/
 node_modules/
 docs/
 .claude/
 package-lock.json
 package.json
 .github/
+thesis/
+plans/
+tasks.yaml
+task_screen_mapping.json
+task-failure-assignments.json
+AGENTS.md
+CLAUDE.md
+.playwright-mcp/
+bin/
+obj/
